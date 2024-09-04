@@ -1,0 +1,15 @@
+global using AutoMapper;
+global using EgeBilgiTaskCase.Application.Abstractions.Services.Common;
+global using EgeBilgiTaskCase.Application.Attributes;
+global using EgeBilgiTaskCase.Application.Common.DTOs.Common;
+global using EgeBilgiTaskCase.Application.Common.Extensions;
+global using EgeBilgiTaskCase.Application.Common.GenericObjects;
+global using EgeBilgiTaskCase.Application.Constants;
+global using EgeBilgiTaskCase.Application.Repositories.Common;
+global using EgeBilgiTaskCase.Domain.Entities.Common;
+global using EgeBilgiTaskCase.Application.Common.Specifications;
+global using Microsoft.Extensions.DependencyInjection;
+global using EgeBilgiTaskCase.Application.Abstractions.Services.Management;
+global using EgeBilgiTaskCase.Application.Common.DTOs.Management;
+global using EgeBilgiTaskCase.Domain.Entities.Management;
+global using EgeBilgiTaskCase.Application.Repositories.Management;

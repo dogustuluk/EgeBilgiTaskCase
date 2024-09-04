@@ -1,0 +1,17 @@
+global using System;
+global using System.Text;
+global using System.Reflection;
+global using System.Collections.Generic;
+global using System.Linq;
+global using System.Linq.Expressions;
+global using System.Threading.Tasks;
+global using System.Linq.Dynamic.Core;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.DependencyInjection;
+global using FluentValidation;
+global using MediatR;
+global using AutoMapper;
+global using LinqKit;
+global using Microsoft.IdentityModel.Tokens;
+global using System.Security.Cryptography;
+global using EgeBilgiTaskCase.Application.Common.GenericObjects;
