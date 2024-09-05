@@ -47,4 +47,19 @@
         public DateTime? ApiCreatedDate { get; set; }
     }
 
+
+    public class EpisodeListDto
+    {
+        public List<EpisodeDto> Results { get; set; }
+        public InfoDto Info { get; set; }
+    }
+    public class EpisodeDto
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public DateTime? AirDate { get; set; }
+        public string Episode { get; set; }
+        public DateTime? ApiCreatedDate { get; set; }
+    }
+
 }

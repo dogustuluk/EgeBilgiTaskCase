@@ -39,14 +39,14 @@ namespace EgeBilgiTaskCase.Infrastructure.Services
         }
 
 
-        //public async Task<List<Episode>> GetEpisodesAsync(int pageNumber)
-        //{
-        //    var response = await _httpClient.GetAsync("https://rickandmortyapi.com/api/episode/?page={pageNumber}");
-        //    response.EnsureSuccessStatusCode();
-        //    var content = await response.Content.ReadAsStringAsync();
-        //    var result = JsonConvert.DeserializeObject<ApiResponse<Episode>>(content);
-        //    return result.Results;
-        //}
+        public async Task<EpisodeListDto> GetEpisodesAsync(int pageNumber)
+        {
+            var response = await _httpClient.GetAsync($"https://rickandmortyapi.com/api/episode/?page={pageNumber}");
+            response.EnsureSuccessStatusCode();
+            var content = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<EpisodeListDto>(content);
+            return result;
+        }
 
         public async Task<LocationListDto> GetLocationsAsync(int pageNumber)
         {

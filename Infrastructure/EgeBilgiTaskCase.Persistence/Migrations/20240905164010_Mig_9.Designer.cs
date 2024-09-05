@@ -4,6 +4,7 @@ using EgeBilgiTaskCase.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EgeBilgiTaskCase.Persistence.Migrations
 {
     [DbContext(typeof(EgeBilgiTaskCaseDbContext))]
-    partial class EgeBilgiTaskCaseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240905164010_Mig_9")]
+    partial class Mig_9
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

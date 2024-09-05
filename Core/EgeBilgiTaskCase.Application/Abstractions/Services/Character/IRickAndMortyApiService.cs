@@ -7,7 +7,7 @@ namespace EgeBilgiTaskCase.Application.Abstractions.Services.Character
     {
         Task<CharacterListDto> GetCharactersAsync(int pageNumber);
         Task<LocationListDto> GetLocationsAsync(int pageNumber);
-      //  Task<List<Episode>> GetEpisodesAsync();
+        Task<EpisodeListDto> GetEpisodesAsync(int pageNumber);
 
     }
 }

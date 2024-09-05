@@ -33,9 +33,11 @@
 
     public class Episode : BaseEntity
     {
+        public int EpisodeApiId { get; set; }
         public string Name { get; set; }
-        public DateTime AirDate { get; set; }
-
+        public DateTime? AirDate { get; set; }
+        public string EpisodeStamp { get; set; }
+        public DateTime? ApiCreatedDate { get; set; }
     }
 
 

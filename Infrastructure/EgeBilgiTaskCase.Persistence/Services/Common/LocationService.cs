@@ -50,7 +50,7 @@ namespace EgeBilgiTaskCase.Persistence.Services.Common
         }
 
 
-
+        //
         public async Task<int> SaveOrGetDbParameterIdAsync(string value, int parameterTypeId, int parentId)
         {
             if (string.IsNullOrEmpty(value))
@@ -74,6 +74,7 @@ namespace EgeBilgiTaskCase.Persistence.Services.Common
             return savedParameter.Id;
         }
 
+        //
         public async Task SaveAllLocationToDatabase()
         {
             int pageNumber = 1;
@@ -101,6 +102,7 @@ namespace EgeBilgiTaskCase.Persistence.Services.Common
             }
         }
 
+        //
         public async Task SaveLocationToDatabase(LocationDto locationDto)
         {
             var dimensionId = await SaveOrGetDbParameterIdAsync(locationDto.Dimension, 7, 5); 

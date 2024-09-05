@@ -115,12 +115,12 @@ namespace HospitalManagement.Persistence.Services.Management
             });
         }
 
-        public async Task<List<DataList1>> GetDataListAsync()
+        public async Task<List<DataList1>> GetDataListAsync(int? itemType)
         {
             return await ExceptionHandler.HandleAsync(async () =>
             {
                 List<DataList1> returnDataList = new();
-                var datas = await _readRepository.GetDataAsync(a => a.Id > 0, "", 10000, "DbParameterTypeName ASC");
+                var datas = await _readRepository.GetDataAsync(a => a.Id > 0 && (itemType == null || a.ItemTypeId == itemType), "", 10000, "DbParameterTypeName ASC");
                 foreach (var data in datas)
                 {
                     returnDataList.Add(new DataList1() { Guid = "", Id = data.Id.ToString(), Name = data.DbParameterTypeName.ToString() });

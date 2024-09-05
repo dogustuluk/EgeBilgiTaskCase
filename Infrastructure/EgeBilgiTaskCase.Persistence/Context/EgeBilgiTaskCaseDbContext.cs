@@ -77,7 +77,15 @@ namespace EgeBilgiTaskCase.Persistence.Context
 
             });
 
-            base.OnModelCreating(builder);
+            builder.Entity<Episode>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(a => a.Id)
+                .ValueGeneratedOnAdd();
+
+                base.OnModelCreating(builder);
+            });
+
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

@@ -19,6 +19,7 @@ namespace EgeBilgiTaskCase.API.Controllers
             _characterService = characterService;
             _mediator = mediator;
         }
+        
         [HttpPost("characters")]
         public async Task<IActionResult> GetCharacters()
         {
