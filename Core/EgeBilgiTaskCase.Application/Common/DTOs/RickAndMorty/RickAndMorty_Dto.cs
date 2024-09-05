@@ -1,10 +1,8 @@
-﻿using Newtonsoft.Json;
-
-namespace EgeBilgiTaskCase.Application.Common.DTOs.RickAndMorty
+﻿namespace EgeBilgiTaskCase.Application.Common.DTOs.RickAndMorty
 {
+    
     public class CharacterListDto
     {
-      //  [JsonProperty("results")]
         public List<CharacterDto> Results { get; set; }
         public InfoDto Info { get; set; }
     }
@@ -32,10 +30,21 @@ namespace EgeBilgiTaskCase.Application.Common.DTOs.RickAndMorty
         public string Url { get; set; }
     }
 
+
+    public class LocationListDto
+    {
+        public List<LocationDto> Results { get; set; }
+        public InfoDto Info { get; set; }
+    }
     public class LocationDto
     {
+        public int Id { get; set; }
         public string Name { get; set; }
+        public string Type { get; set; }
+        public string Dimension { get; set; }
+        public List<string> Residents { get; set; }
         public string Url { get; set; }
+        public DateTime? ApiCreatedDate { get; set; }
     }
 
 }

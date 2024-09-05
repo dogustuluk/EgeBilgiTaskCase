@@ -39,27 +39,23 @@ namespace EgeBilgiTaskCase.Infrastructure.Services
         }
 
 
-
-
-
-
-        //public async Task<List<Episode>> GetEpisodesAsync()
+        //public async Task<List<Episode>> GetEpisodesAsync(int pageNumber)
         //{
-        //    var response = await _httpClient.GetAsync("https://rickandmortyapi.com/api/episode");
+        //    var response = await _httpClient.GetAsync("https://rickandmortyapi.com/api/episode/?page={pageNumber}");
         //    response.EnsureSuccessStatusCode();
         //    var content = await response.Content.ReadAsStringAsync();
-        //    var result = JsonConvert.DeserializeObject<ApiResponse<Episode>>(content);            
+        //    var result = JsonConvert.DeserializeObject<ApiResponse<Episode>>(content);
         //    return result.Results;
         //}
 
-        //public async Task<List<Location>> GetLocationsAsync()
-        //{
-        //    var response = await _httpClient.GetAsync("https://rickandmortyapi.com/api/location");
-        //    response.EnsureSuccessStatusCode();
-        //    var content = await response.Content.ReadAsStringAsync();
-        //    var result = JsonConvert.DeserializeObject<ApiResponse<Location>>(content);
-        //    return result.Results;
-        //}
+        public async Task<LocationListDto> GetLocationsAsync(int pageNumber)
+        {
+            var response = await _httpClient.GetAsync($"https://rickandmortyapi.com/api/location/?page={pageNumber}");
+            response.EnsureSuccessStatusCode();
+            var content = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<LocationListDto>(content);
+            return result;
+        }
 
     }
 }

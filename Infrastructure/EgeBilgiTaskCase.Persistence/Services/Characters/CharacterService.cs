@@ -1,6 +1,7 @@
 ﻿using EgeBilgiTaskCase.Application.Abstractions.Services.Character;
 using EgeBilgiTaskCase.Application.Common.DTOs.RickAndMorty;
 using EgeBilgiTaskCase.Application.Repositories.Character;
+using EgeBilgiTaskCase.Application.Repositories.Common;
 using EgeBilgiTaskCase.Domain.Entities.Character;
 
 namespace EgeBilgiTaskCase.Persistence.Services.Characters
@@ -12,13 +13,19 @@ namespace EgeBilgiTaskCase.Persistence.Services.Characters
         private readonly ICharacterWriteRepository _characterWriteRepositoryService;
         private readonly ICharacterReadRepository _characterReadRepositoryService;
         private readonly IMapper _mapper;
+        private readonly IDbParameterReadRepository _dbParameterReadRepository;
+        private readonly IDbParameterWriteRepository _dbParameterWriteRepository;
+        private readonly ICharacterDetailWriteRepository _characterDetailWriteRepository;
 
-        public CharacterService(IRickAndMortyApiService rickAndMortyApiService, ICharacterWriteRepository characterWriteRepositoryService, IMapper mapper, ICharacterReadRepository characterReadRepositoryService)
+        public CharacterService(IRickAndMortyApiService rickAndMortyApiService, ICharacterWriteRepository characterWriteRepositoryService, IMapper mapper, ICharacterReadRepository characterReadRepositoryService, IDbParameterReadRepository dbParameterReadRepository, IDbParameterWriteRepository dbParameterWriteRepository, ICharacterDetailWriteRepository characterDetailWriteRepository)
         {
             _rickAndMortyApiService = rickAndMortyApiService;
             _characterWriteRepositoryService = characterWriteRepositoryService;
             _mapper = mapper;
             _characterReadRepositoryService = characterReadRepositoryService;
+            _dbParameterReadRepository = dbParameterReadRepository;
+            _dbParameterWriteRepository = dbParameterWriteRepository;
+            _characterDetailWriteRepository = characterDetailWriteRepository;
         }
 
         public async Task SaveCharacterToDatabase(CharacterDto characterDto)
@@ -27,36 +34,39 @@ namespace EgeBilgiTaskCase.Persistence.Services.Characters
             {
                 CharacterApiId = characterDto.Id,
                 Name = characterDto.Name,
-                Status = characterDto.Status,
-                Species = characterDto.Species,
-                Type = characterDto.Type,
                 Gender = characterDto.Gender,
                 Image = characterDto.Image,
-                OriginId = ExtractIdFromUrl(characterDto.Origin.Url),
-                LocationId = ExtractIdFromUrl(characterDto.Location.Url),
-                EpisodeIds = ExtractIdsFromUrls(characterDto.Episode)
+              //  EpisodeIds = ExtractIdsFromUrls(characterDto.Episode)
             };
 
             var data = await _characterWriteRepositoryService.AddAsyncReturnEntity(characterEntity);
             await _characterWriteRepositoryService.SaveChanges();
 
+            int speciesId = await SaveOrGetDbParameterId(characterDto.Species, 1); // 2=Species
+            int typeId = await SaveOrGetDbParameterId(characterDto.Type, 2); // 3=Type
+            int statusId = await SaveOrGetDbParameterId(characterDto.Status, 3); // 1=Status
+
+            var guid = Guid.NewGuid();
+            var characterDetailEntity = new CharacterDetail
+            {
+                CharacterId = data.Id,
+                OriginId = ExtractIdFromUrl(characterDto.Origin.Url),
+                LocationId = ExtractIdFromUrl(characterDto.Location.Url),
+                StatusId = statusId,
+                SpeciesId = speciesId,
+                TypeId = typeId,
+                EpisodeIds = ExtractIdsFromUrls(characterDto.Episode),
+                CreatedUser = guid,
+                CreatedDate = DateTime.UtcNow,
+                UpdatedUser = guid,
+                UpdatedDate = DateTime.UtcNow,
+            };
+
+            await _characterDetailWriteRepository.AddAsyncReturnEntity(characterDetailEntity);
+            await _characterDetailWriteRepository.SaveChanges();
         }
         public async Task SaveAllCharactersToDatabase()
         {
-            //try
-            //{
-            //    var characterDtos = _rickAndMortyApiService.GetCharactersAsync().Result;
-
-            //    foreach (var characterDto in characterDtos)
-            //    {
-            //        SaveCharacterToDatabase(characterDto);
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    var err = ex.Message;
-            //    throw;
-            //}
             int pageNumber = 1;
             bool hasMorePages = true;
 
@@ -84,21 +94,27 @@ namespace EgeBilgiTaskCase.Persistence.Services.Characters
 
         }
 
-        public async Task<OptResult<PaginatedList<Character>>> GetAllPagedCharacterAsync(Character_Index_Dto model)
+        public async Task<int> SaveOrGetDbParameterId(string value, int parameterTypeId)
         {
-            // var predicate = _errorSpecications.GetAllPagedPredicate(model);
-            if (string.IsNullOrEmpty(model.OrderBy)) model.OrderBy = "Id DESC";
+            if (string.IsNullOrEmpty(value))
+                return 0;
 
-            PaginatedList<Character> pagedDatas;
+            var existingParameter = _dbParameterReadRepository.GetSingleEntityAsync(p => p.DBParameterName1 == value && p.DbParameterTypeId == parameterTypeId).Result;
+            if (existingParameter != null)
+                return existingParameter.Id;
 
-            pagedDatas = await _characterReadRepositoryService.GetDataPagedAsync(a => a.Id > 0, "", model.PageIndex, model.Take, model.OrderBy, true);
+            var newParameter = new DbParameter
+            {
+                DBParameterName1 = value,
+                DbParameterTypeId = parameterTypeId,
+                isEditable = true,
+                isActive = true
+            };
 
-            return await OptResult<PaginatedList<Character>>.SuccessAsync(pagedDatas, Messages.Successfull);
+            var savedParameter = await _dbParameterWriteRepository.AddAsyncReturnEntity(newParameter);
+            await _dbParameterWriteRepository.SaveChanges();
+            return savedParameter.Id;
         }
-
-
-
-
 
         public int ExtractIdFromUrl(string url)
         {
@@ -111,6 +127,20 @@ namespace EgeBilgiTaskCase.Persistence.Services.Characters
         public List<int> ExtractIdsFromUrls(List<string> urls)
         {
             return urls.Select(url => ExtractIdFromUrl(url)).ToList();
+        }
+
+
+
+        public async Task<OptResult<PaginatedList<Character>>> GetAllPagedCharacterAsync(Character_Index_Dto model)
+        {
+            // var predicate = _errorSpecications.GetAllPagedPredicate(model);
+            if (string.IsNullOrEmpty(model.OrderBy)) model.OrderBy = "Id DESC";
+
+            PaginatedList<Character> pagedDatas;
+
+            pagedDatas = await _characterReadRepositoryService.GetDataPagedAsync(a => a.Id > 0, "", model.PageIndex, model.Take, model.OrderBy, true);
+
+            return await OptResult<PaginatedList<Character>>.SuccessAsync(pagedDatas, Messages.Successfull);
         }
     }
 }

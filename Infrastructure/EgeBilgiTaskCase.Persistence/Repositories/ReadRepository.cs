@@ -186,8 +186,7 @@ namespace EgeBilgiTaskCase.Persistence.Repositories
             if (!tracking)
                 query = query.AsNoTracking();
             var result = await query.SingleOrDefaultAsync(method);
-            if (result != null) return result;
-            else throw new InvalidOperationException("Eşleşen bir entity bulunamadı");
+            return result;
         }
 
         public async Task<IQueryable<T>> GetSortedDataAsync(IQueryable<T> query, string orderBy)

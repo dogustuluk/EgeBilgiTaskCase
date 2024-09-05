@@ -2,7 +2,6 @@
 using EgeBilgiTaskCase.Application.Common.GenericObjects;
 using EgeBilgiTaskCase.Application.Features.Queries.Character.GetAllPagedCharacter;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EgeBilgiTaskCase.API.Controllers
@@ -25,15 +24,11 @@ namespace EgeBilgiTaskCase.API.Controllers
         {
             try
             {
-               
-                //var characters = await _rickAndMortyApiService.GetCharactersAsync();
                 var characters = _characterService.SaveAllCharactersToDatabase();
-
                 return Ok(characters);
             }
             catch (Exception ex)
             {
-                // Hata durumunda uygun yanıtı döndür
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Internal server error: {ex.Message}");
             }
         }

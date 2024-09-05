@@ -6,8 +6,8 @@ namespace EgeBilgiTaskCase.Application.Abstractions.Services.Character
     public interface IRickAndMortyApiService
     {
         Task<CharacterListDto> GetCharactersAsync(int pageNumber);
-        //Task<List<Location>> GetLocationsAsync();
-        //Task<List<Episode>> GetEpisodesAsync();
+        Task<LocationListDto> GetLocationsAsync(int pageNumber);
+      //  Task<List<Episode>> GetEpisodesAsync();
 
     }
 }

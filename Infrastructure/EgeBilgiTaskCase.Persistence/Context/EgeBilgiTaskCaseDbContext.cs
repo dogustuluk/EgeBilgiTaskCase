@@ -12,6 +12,7 @@ namespace EgeBilgiTaskCase.Persistence.Context
         }
         #region Character
         public DbSet<Character> Characters { get; set; }
+        public DbSet<CharacterDetail> CharacterDetails { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Episode> Episodes { get; set; }
 
@@ -49,48 +50,32 @@ namespace EgeBilgiTaskCase.Persistence.Context
                 entity.Property(a => a.Id)
                     .ValueGeneratedOnAdd();
 
-                //entity.HasOne(c => c.Origin)
-                //    .WithMany()
-                //    .HasForeignKey(c => c.OriginId)
-                //    .OnDelete(DeleteBehavior.Restrict);
-
-                //entity.HasOne(c => c.Location)
-                //    .WithMany(l => l.Residents)
-                //    .HasForeignKey(c => c.LocationId)
-                //    .OnDelete(DeleteBehavior.Restrict);
+            });
+            builder.Entity<CharacterDetail>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(a => a.Id)
+                .ValueGeneratedOnAdd();
 
                 entity.Property(c => c.EpisodeIds)
                     .HasConversion(
                         v => string.Join(',', v),
                         v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList());
+
             });
-            
-            //builder.Entity<Character>(entity =>
-            //{
-            //    entity.HasKey(a => a.Id);
-            //    entity.Property(a => a.Id)
-            //    .ValueGeneratedOnAdd();
 
-            //});
+            builder.Entity<Location>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(a => a.Id)
+                .ValueGeneratedOnAdd();
 
-            //builder.Entity<Character>()
-            //.HasOne(c => c.Origin)
-            //.WithMany()
-            //.HasForeignKey(c => c.OriginId)
-            //.OnDelete(DeleteBehavior.Restrict);
+                entity.Property(c => c.Residents)
+                    .HasConversion(
+                        v => string.Join(',', v),
+                        v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList());
 
-            //builder.Entity<Character>()
-            //    .HasOne(c => c.Location)
-            //    .WithMany(l => l.Residents)
-            //    .HasForeignKey(c => c.LocationId)
-            //    .OnDelete(DeleteBehavior.Restrict);
-
-            //builder.Entity<Character>()
-            //.Property(c => c.EpisodeIds)
-            //.HasConversion(
-            //    v => string.Join(',', v),
-            //    v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList());
-
+            });
 
             base.OnModelCreating(builder);
         }
