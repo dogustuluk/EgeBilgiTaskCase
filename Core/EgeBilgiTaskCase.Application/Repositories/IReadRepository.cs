@@ -33,5 +33,9 @@ namespace EgeBilgiTaskCase.Application.Repositories
         Task<int> CountAsync(Expression<Func<T, bool>>? predicate);
 
 
+
+
+
+        Task<PaginatedList<T>> GetDataPagedAsyncInclude(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IQueryable<T>>? include, int pageIndex, int take, string orderBy, bool? isTrack = false);
     }
 }

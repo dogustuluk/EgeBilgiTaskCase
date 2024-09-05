@@ -51,6 +51,12 @@ namespace EgeBilgiTaskCase.Persistence.Context
                     .ValueGeneratedOnAdd();
 
             });
+            builder.Entity<Character>()
+            .HasOne(c => c.CharacterDetails)
+            .WithOne(cd => cd.Character)
+            .HasForeignKey<CharacterDetail>(cd => cd.CharacterId);
+
+
             builder.Entity<CharacterDetail>(entity =>
             {
                 entity.HasKey(e => e.Id);

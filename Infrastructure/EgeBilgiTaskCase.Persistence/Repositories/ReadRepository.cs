@@ -119,6 +119,34 @@ namespace EgeBilgiTaskCase.Persistence.Repositories
             return query;
         }
 
+
+        public async Task<PaginatedList<T>> GetDataPagedAsyncInclude(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IQueryable<T>>? include, int pageIndex, int take, string orderBy, bool? isTrack = false)
+        {
+            var query = Table.AsQueryable();
+
+            // Include işlemi
+            if (include != null)
+            {
+                query = include(query);
+            }
+
+            // Predicate (filtre) işlemi
+            if (predicate != null)
+                query = query.Where(predicate);
+
+            // Order By işlemi
+            if (!string.IsNullOrEmpty(orderBy))
+                query = query.OrderBy(orderBy);
+
+            // Tracking
+            if (isTrack == true)
+                query = query.AsNoTracking();
+
+            // Sonuçları sayfalama
+            return await CreatePaginatedList.CreateAsync<T>(query, pageIndex, take);
+        }
+
+
         public async Task<PaginatedList<T>> GetDataPagedAsync(Expression<Func<T, bool>> predicate, string? include, int pageIndex, int take, string orderBy, bool? isTrack = false)
         {
             var query = Table.AsQueryable();
