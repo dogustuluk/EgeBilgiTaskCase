@@ -1,5 +1,6 @@
 ﻿using EgeBilgiTaskCase.Application.Abstractions.Services.Character;
 using EgeBilgiTaskCase.Application.Common.DTOs.RickAndMorty;
+using EgeBilgiTaskCase.Application.Common.Specifications;
 using EgeBilgiTaskCase.Application.Repositories.Character;
 using EgeBilgiTaskCase.Application.Repositories.Common;
 using EgeBilgiTaskCase.Domain.Entities.Character;
@@ -20,8 +21,10 @@ namespace EgeBilgiTaskCase.Persistence.Services.Characters
         private readonly ICharacterDetailWriteRepository _characterDetailWriteRepository;
         private readonly ICharacterDetailReadRepository _characterDetailReadRepository;
         private readonly ILocationReadRepository _locationReadRepository;
+        private readonly IEpisodeReadRepository _episodeReadRepository;
+        private readonly CharacterSpecifications _characterSpecifications;
 
-        public CharacterService(IRickAndMortyApiService rickAndMortyApiService, ICharacterWriteRepository characterWriteRepositoryService, IMapper mapper, ICharacterReadRepository characterReadRepositoryService, IDbParameterReadRepository dbParameterReadRepository, IDbParameterWriteRepository dbParameterWriteRepository, ICharacterDetailWriteRepository characterDetailWriteRepository, ICharacterDetailReadRepository characterDetailReadRepository, ILocationReadRepository locationReadRepository)
+        public CharacterService(IRickAndMortyApiService rickAndMortyApiService, ICharacterWriteRepository characterWriteRepositoryService, IMapper mapper, ICharacterReadRepository characterReadRepositoryService, IDbParameterReadRepository dbParameterReadRepository, IDbParameterWriteRepository dbParameterWriteRepository, ICharacterDetailWriteRepository characterDetailWriteRepository, ICharacterDetailReadRepository characterDetailReadRepository, ILocationReadRepository locationReadRepository, IEpisodeReadRepository episodeReadRepository, CharacterSpecifications characterSpecifications)
         {
             _rickAndMortyApiService = rickAndMortyApiService;
             _characterWriteRepositoryService = characterWriteRepositoryService;
@@ -32,6 +35,8 @@ namespace EgeBilgiTaskCase.Persistence.Services.Characters
             _characterDetailWriteRepository = characterDetailWriteRepository;
             _characterDetailReadRepository = characterDetailReadRepository;
             _locationReadRepository = locationReadRepository;
+            _episodeReadRepository = episodeReadRepository;
+            _characterSpecifications = characterSpecifications;
         }
 
         public async Task SaveCharacterToDatabase(CharacterDto characterDto)
@@ -137,13 +142,13 @@ namespace EgeBilgiTaskCase.Persistence.Services.Characters
 
 
 
-        public async Task<OptResult<PaginatedList<Character>>> GetAllPagedCharacterAsync(Character_Index_Dto model)
+        public async Task<OptResult<PaginatedList<Character_GridView_Dto>>> GetAllPagedCharacterAsync(Character_Index_Dto model)
         {
-            // var predicate = _errorSpecications.GetAllPagedPredicate(model);
-            if (string.IsNullOrEmpty(model.OrderBy)) model.OrderBy = "Id DESC";
+            var predicate = _characterSpecifications.GetAllPagedPredicate(model);
+            if (string.IsNullOrEmpty(model.OrderBy)) model.OrderBy = "Id ASC";
             PaginatedList<Character> pagedDatas;
 
-            pagedDatas = await _characterReadRepositoryService.GetDataPagedAsyncInclude(a => a.Id > 0, query => query.Include(c => c.CharacterDetails), model.PageIndex, model.Take, model.OrderBy, true);
+            pagedDatas = await _characterReadRepositoryService.GetDataPagedAsyncInclude(predicate, query => query.Include(c => c.CharacterDetails), model.PageIndex, model.Take, model.OrderBy, true);
             
             var gridViewDtoList = new List<Character_GridView_Dto>();
 
@@ -153,36 +158,63 @@ namespace EgeBilgiTaskCase.Persistence.Services.Characters
                     "DbParameters",
                     "DBParameterName1",
                     $"Id = {character.CharacterDetails.StatusId}",2);
+                
                 string? speciesName = await _dbParameterReadRepository.GetValueAsync(
                     "DbParameters",
                     "DBParameterName1",
                     $"Id = {character.CharacterDetails.SpeciesId}", 2);
+                
                 string? typeName = await _dbParameterReadRepository.GetValueAsync(
                     "DbParameters",
                     "DBParameterName1",
                     $"Id = {character.CharacterDetails.TypeId}", 2);
-                string? locationName = await _locationReadRepository.GetValueAsync(
+                
+                string? firstSeen = await _locationReadRepository.GetValueAsync(
                     "Locations",
                     "Name",
-                    $"Id = {character.CharacterDetails.LocationId}", 2);
-                string? originName = await _locationReadRepository.GetValueAsync(
+                    $"LocationApiId = {character.CharacterDetails.LocationId}", 2); 
+                
+                string? lastKnownLocation = await _locationReadRepository.GetValueAsync(
                     "Locations",
                     "Name",
-                    $"Id = {character.CharacterDetails.OriginId}", 2);
+                    $"LocationApiId = {character.CharacterDetails.OriginId}", 2);
 
 
                 var dto = new Character_GridView_Dto
                 {
-                    CharacterId = character.Id,
+                  //  CharacterId = character.Id,
                     CharacterName = character.Name,
+                    Image= character.Image,
+                //    LocationId = character.CharacterDetails.LocationId,
+                    LastKnownLocationName = lastKnownLocation,
+                //    OriginId = character.CharacterDetails.OriginId,
+                    FirstSeenName = firstSeen,
+               //     SpeciesId = character.CharacterDetails.SpeciesId,
+                    SpeciesName = speciesName,
                     Gender = character.Gender,
+              //      StatusId= character.CharacterDetails.StatusId,
                     StatusName = statusName
                 };
 
                 gridViewDtoList.Add(dto);
             }
+            
+            var paginatedResult = new PaginatedList<Character_GridView_Dto>
+            {
+                Data = gridViewDtoList,
+                Pagination = new Pagination
+                {
+                    TotalPages = pagedDatas.Pagination.TotalPages,
+                    TotalRecords = pagedDatas.Pagination.TotalRecords,
+                    PageIndex = pagedDatas.Pagination.PageIndex,
+                    PageSize = pagedDatas.Pagination.PageSize,
+                    HasNextPage = pagedDatas.Pagination.HasNextPage,
+                    HasPreviousPage = pagedDatas.Pagination.HasPreviousPage
+                }
+            };
 
-            return await OptResult<PaginatedList<Character>>.SuccessAsync(pagedDatas, Messages.Successfull);
+
+            return await OptResult<PaginatedList<Character_GridView_Dto>>.SuccessAsync(paginatedResult, Messages.Successfull);
         }
     }
 }

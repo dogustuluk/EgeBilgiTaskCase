@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EgeBilgiTaskCase.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Character/[controller]")]
     [ApiController]
     public class CharacterController : ControllerBase
     {

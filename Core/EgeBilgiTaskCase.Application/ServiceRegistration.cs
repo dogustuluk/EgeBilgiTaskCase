@@ -16,6 +16,7 @@ namespace HospitalManagement.Application
 
             //otomatize et -->
             
+            serviceCollection.AddScoped<CharacterSpecifications>();
             serviceCollection.AddScoped<DbParameterSpecifications>();
             serviceCollection.AddScoped<DbParameterTypeSpecifications>();
             serviceCollection.AddScoped<ErrorSpecifications>();

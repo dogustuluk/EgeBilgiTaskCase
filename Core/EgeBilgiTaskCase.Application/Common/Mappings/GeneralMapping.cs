@@ -16,6 +16,7 @@ namespace EgeBilgiTaskCase.Application.Common.Mappings
             CreateMap<GetAllPagedCharacterQueryRequest, Character_Index_Dto>();
             CreateMap<Character, GetAllPagedCharacterQueryRequest > ();
             CreateMap<Character, GetAllPagedCharacterQueryResponse>();
+            CreateMap<Character_GridView_Dto, GetAllPagedCharacterQueryResponse>();
             //<PaginatedList<Character>, PaginatedList<GetAllPagedCharacterQueryResponse>>();
 
 

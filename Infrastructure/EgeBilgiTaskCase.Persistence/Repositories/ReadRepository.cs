@@ -261,8 +261,8 @@ namespace EgeBilgiTaskCase.Persistence.Repositories
 
             string result = await _context.Database.SqlQuery<string>(formattedSqlQuery).FirstOrDefaultAsync();
 
-            if (result != null) return result;
-            else throw new ArgumentNullException();
+            return result;
+
             //string sql = $"SELECT TOP 1 CONVERT(nvarchar, {column}) as [Value] FROM {table} WHERE {sqlQuery}";
 
             //FormattableString formattedSqlQuery = FormattableStringFactory.Create(sql);

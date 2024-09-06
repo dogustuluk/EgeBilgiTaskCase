@@ -1,7 +1,17 @@
+using EgeBilgiTaskCase.Client.Extensions.StartupExtensions;
+using EgeBilgiTaskCase.Client.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.JsonOptionsStartupExtension();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AuthOptionsStartupExtension();
+builder.Services.IISOptionsStartupExtension();
+builder.Services.HttpClientOptionsStartupExtension(builder.Configuration);
+builder.Services.AddScoped<AAAService>();
 
 var app = builder.Build();
 
@@ -14,10 +24,12 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseDeveloperExceptionPage();
+
 app.UseStaticFiles();
 
 app.UseRouting();
-
+//app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

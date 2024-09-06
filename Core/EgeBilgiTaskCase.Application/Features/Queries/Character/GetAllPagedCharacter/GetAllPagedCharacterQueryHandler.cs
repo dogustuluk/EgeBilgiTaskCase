@@ -30,7 +30,7 @@ namespace EgeBilgiTaskCase.Application.Features.Queries.Character.GetAllPagedCha
                 var result = await _characterService.GetAllPagedCharacterAsync(model);
                 var response = _mapper.Map<PaginatedList<GetAllPagedCharacterQueryResponse>>(result.Data);
 
-                if (result == null) return await OptResult<PaginatedList<GetAllPagedCharacterQueryResponse>>.FailureAsync(Messages.UnSuccessfull);
+                if (result == null) return await OptResult<PaginatedList<GetAllPagedCharacterQueryResponse>>.FailureAsync(result.Messages);
 
                 return await OptResult<PaginatedList<GetAllPagedCharacterQueryResponse>>.SuccessAsync(response, Messages.Successfull);
             });
