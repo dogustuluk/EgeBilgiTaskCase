@@ -22,6 +22,9 @@ namespace HospitalManagement.Persistence
                 options.Password.RequireDigit = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireLowercase = false;
+               
+                options.User.RequireUniqueEmail = true;
+                options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";
             }).AddEntityFrameworkStores<EgeBilgiTaskCaseDbContext>();//identity
             
 

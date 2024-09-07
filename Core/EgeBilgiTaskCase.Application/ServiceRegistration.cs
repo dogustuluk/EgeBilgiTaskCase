@@ -1,5 +1,7 @@
-﻿using EgeBilgiTaskCase.Application.Common.Specifications;
+﻿using EgeBilgiTaskCase.Application.Abstractions.Security;
+using EgeBilgiTaskCase.Application.Common.Specifications;
 using EgeBilgiTaskCase.Application.Common.Validators;
+using EgeBilgiTaskCase.Application.Services;
 
 namespace HospitalManagement.Application
 {
@@ -22,7 +24,7 @@ namespace HospitalManagement.Application
             serviceCollection.AddScoped<ErrorSpecifications>();
             serviceCollection.AddScoped<UserSpecifications>();
             
-           // serviceCollection.AddScoped<ICryptographyService,CryptographyService>();
+           serviceCollection.AddScoped<ICryptographyService,CryptographyService>();
 
         }
     }

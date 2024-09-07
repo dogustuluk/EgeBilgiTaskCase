@@ -1,88 +1,90 @@
-﻿//namespace EgeBilgiTaskCase.Application.Services
-//{
-//    public class CryptographyService : ICryptographyService
-//    {
-//        string encryptionKey =  GenerateRandomKey(256).Result;
-        
-//        public async Task<string> DecryptString(string text)
-//        {
-//            byte[] cipherBytes = Convert.FromBase64String(text);
-//            string EncryptionKey = await GenerateRandomKey(256);
+﻿using EgeBilgiTaskCase.Application.Abstractions.Security;
 
-//            using (Aes aesAlg = Aes.Create())
-//            {
-//                aesAlg.Key = Convert.FromBase64String(encryptionKey);
-//                aesAlg.IV = cipherBytes.Take(16).ToArray();
+namespace EgeBilgiTaskCase.Application.Services
+{
+    public class CryptographyService : ICryptographyService
+    {
+        string encryptionKey = GenerateRandomKey(256).Result;
 
-//                aesAlg.Padding = PaddingMode.PKCS7; // Set the padding mode to PKCS7
+        public async Task<string> DecryptString(string text)
+        {
+            byte[] cipherBytes = Convert.FromBase64String(text);
+            string EncryptionKey = await GenerateRandomKey(256);
 
-//                ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
+            using (Aes aesAlg = Aes.Create())
+            {
+                aesAlg.Key = Convert.FromBase64String(encryptionKey);
+                aesAlg.IV = cipherBytes.Take(16).ToArray();
 
-//                using (MemoryStream msDecrypt = new MemoryStream(cipherBytes, 16, cipherBytes.Length - 16))
-//                {
-//                    using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
-//                    {
-//                        using (StreamReader srDecrypt = new StreamReader(csDecrypt))
-//                        {
-//                            return srDecrypt.ReadToEnd();
-//                        }
-//                    }
-//                }
-//            }
-//        }
+                aesAlg.Padding = PaddingMode.PKCS7; // Set the padding mode to PKCS7
 
-//        public async Task<string> EncryptString(string text)
-//        {
-//            string EncryptionKey = await GenerateRandomKey(256);
-//            byte[] iv = await GenerateRandomIV();
+                ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
 
-//            using (Aes aesAlgorithm = Aes.Create())
-//            {
-//                aesAlgorithm.Key = Convert.FromBase64String(encryptionKey);
-//                aesAlgorithm.IV = iv;
+                using (MemoryStream msDecrypt = new MemoryStream(cipherBytes, 16, cipherBytes.Length - 16))
+                {
+                    using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+                    {
+                        using (StreamReader srDecrypt = new StreamReader(csDecrypt))
+                        {
+                            return srDecrypt.ReadToEnd();
+                        }
+                    }
+                }
+            }
+        }
 
-//                aesAlgorithm.Padding = PaddingMode.PKCS7;
+        public async Task<string> EncryptString(string text)
+        {
+            string EncryptionKey = await GenerateRandomKey(256);
+            byte[] iv = await GenerateRandomIV();
 
-//                ICryptoTransform encryptor = aesAlgorithm.CreateEncryptor(aesAlgorithm.Key, aesAlgorithm.IV);
+            using (Aes aesAlgorithm = Aes.Create())
+            {
+                aesAlgorithm.Key = Convert.FromBase64String(encryptionKey);
+                aesAlgorithm.IV = iv;
 
-//                using (MemoryStream msEncrypt = new MemoryStream())
-//                {
-//                    using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
-//                    {
-//                        using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
-//                        {
-//                            swEncrypt.Write(text);
-//                        }
-//                    }
-//                    byte[] encryptedBytes = msEncrypt.ToArray();
-//                    byte[] resultBytes = new byte[iv.Length + encryptedBytes.Length];
-//                    Array.Copy(iv, 0, resultBytes, 0, iv.Length);
-//                    Array.Copy(encryptedBytes, 0, resultBytes, iv.Length, encryptedBytes.Length);
-//                    return Convert.ToBase64String(resultBytes);
-//                }
-//            }
-//        }
+                aesAlgorithm.Padding = PaddingMode.PKCS7;
 
-//        public async Task<byte[]> GenerateRandomIV()
-//        {
-//            using (Aes aesAlg = Aes.Create())
-//            {
-//                aesAlg.GenerateIV();
-//                return aesAlg.IV;
-//            }
-//        }
+                ICryptoTransform encryptor = aesAlgorithm.CreateEncryptor(aesAlgorithm.Key, aesAlgorithm.IV);
 
-//        public static Task<string> GenerateRandomKey(int keySizeInBits)
-//        {
-//            int keySizeInBytes = keySizeInBits / 8;
+                using (MemoryStream msEncrypt = new MemoryStream())
+                {
+                    using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
+                    {
+                        using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
+                        {
+                            swEncrypt.Write(text);
+                        }
+                    }
+                    byte[] encryptedBytes = msEncrypt.ToArray();
+                    byte[] resultBytes = new byte[iv.Length + encryptedBytes.Length];
+                    Array.Copy(iv, 0, resultBytes, 0, iv.Length);
+                    Array.Copy(encryptedBytes, 0, resultBytes, iv.Length, encryptedBytes.Length);
+                    return Convert.ToBase64String(resultBytes);
+                }
+            }
+        }
 
-//            byte[] keyBytes = new byte[keySizeInBytes];
+        public async Task<byte[]> GenerateRandomIV()
+        {
+            using (Aes aesAlg = Aes.Create())
+            {
+                aesAlg.GenerateIV();
+                return aesAlg.IV;
+            }
+        }
 
-//            using (var rng = new RNGCryptoServiceProvider())
-//            {
-//                rng.GetBytes(keyBytes);
-//            }
-//            return Task.FromResult(Convert.ToBase64String(keyBytes));
-//        }
-//    }
-//}
+        public static Task<string> GenerateRandomKey(int keySizeInBits)
+        {
+            int keySizeInBytes = keySizeInBits / 8;
+
+            byte[] keyBytes = new byte[keySizeInBytes];
+
+            using (var rng = new RNGCryptoServiceProvider())
+            {
+                rng.GetBytes(keyBytes);
+            }
+            return Task.FromResult(Convert.ToBase64String(keyBytes));
+        }
+    }
+}

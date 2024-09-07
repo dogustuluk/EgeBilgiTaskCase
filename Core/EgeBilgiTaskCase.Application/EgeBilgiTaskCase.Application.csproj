@@ -24,7 +24,6 @@
 	  <ProjectReference Include="..\EgeBilgiTaskCase.Domain\EgeBilgiTaskCase.Domain.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Features\Commands\" />
 	  <Folder Include="Features\Queries\DbParameterType\GetAllDbParameterType\" />
 	  <Folder Include="Features\Queries\DbParameterType\GetByIdorGuidDbParameterType\" />
 	  <Folder Include="Features\Queries\DbParameterType\GetPagedDbParameterType\" />
