@@ -1,11 +1,8 @@
 ﻿using EgeBilgiTaskCase.Application.Abstractions.Services.Character;
 using EgeBilgiTaskCase.Application.Common.DTOs.RickAndMorty;
-using EgeBilgiTaskCase.Application.Common.Specifications;
 using EgeBilgiTaskCase.Application.Repositories.Character;
-using EgeBilgiTaskCase.Application.Repositories.Common;
 using EgeBilgiTaskCase.Domain.Entities.Character;
 using Microsoft.EntityFrameworkCore;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace EgeBilgiTaskCase.Persistence.Services.Characters
 {
@@ -16,27 +13,26 @@ namespace EgeBilgiTaskCase.Persistence.Services.Characters
         private readonly ICharacterWriteRepository _characterWriteRepositoryService;
         private readonly ICharacterReadRepository _characterReadRepositoryService;
         private readonly IMapper _mapper;
-        private readonly IDbParameterReadRepository _dbParameterReadRepository;
         private readonly IDbParameterWriteRepository _dbParameterWriteRepository;
         private readonly ICharacterDetailWriteRepository _characterDetailWriteRepository;
-        private readonly ICharacterDetailReadRepository _characterDetailReadRepository;
-        private readonly ILocationReadRepository _locationReadRepository;
-        private readonly IEpisodeReadRepository _episodeReadRepository;
         private readonly CharacterSpecifications _characterSpecifications;
+        private readonly IDbParameterService _dbParameterService;
+        private readonly ILocationService _locationService;
+        private readonly IEpisodeService _episodeService;
 
-        public CharacterService(IRickAndMortyApiService rickAndMortyApiService, ICharacterWriteRepository characterWriteRepositoryService, IMapper mapper, ICharacterReadRepository characterReadRepositoryService, IDbParameterReadRepository dbParameterReadRepository, IDbParameterWriteRepository dbParameterWriteRepository, ICharacterDetailWriteRepository characterDetailWriteRepository, ICharacterDetailReadRepository characterDetailReadRepository, ILocationReadRepository locationReadRepository, IEpisodeReadRepository episodeReadRepository, CharacterSpecifications characterSpecifications)
+
+        public CharacterService(IRickAndMortyApiService rickAndMortyApiService, ICharacterWriteRepository characterWriteRepositoryService, IMapper mapper, ICharacterReadRepository characterReadRepositoryService, IDbParameterWriteRepository dbParameterWriteRepository, ICharacterDetailWriteRepository characterDetailWriteRepository,CharacterSpecifications characterSpecifications, IDbParameterService dbParameterService, ILocationService locationService, IEpisodeService episodeService)
         {
             _rickAndMortyApiService = rickAndMortyApiService;
             _characterWriteRepositoryService = characterWriteRepositoryService;
             _mapper = mapper;
             _characterReadRepositoryService = characterReadRepositoryService;
-            _dbParameterReadRepository = dbParameterReadRepository;
             _dbParameterWriteRepository = dbParameterWriteRepository;
             _characterDetailWriteRepository = characterDetailWriteRepository;
-            _characterDetailReadRepository = characterDetailReadRepository;
-            _locationReadRepository = locationReadRepository;
-            _episodeReadRepository = episodeReadRepository;
             _characterSpecifications = characterSpecifications;
+            _dbParameterService = dbParameterService;
+            _locationService = locationService;
+            _episodeService = episodeService;
         }
 
         public async Task SaveCharacterToDatabase(CharacterDto characterDto)
@@ -47,7 +43,6 @@ namespace EgeBilgiTaskCase.Persistence.Services.Characters
                 Name = characterDto.Name,
                 Gender = characterDto.Gender,
                 Image = characterDto.Image,
-              //  EpisodeIds = ExtractIdsFromUrls(characterDto.Episode)
             };
 
             var data = await _characterWriteRepositoryService.AddAsyncReturnEntity(characterEntity);
@@ -80,7 +75,6 @@ namespace EgeBilgiTaskCase.Persistence.Services.Characters
         {
             int pageNumber = 1;
             bool hasMorePages = true;
-
             try
             {
                 while (hasMorePages)
@@ -110,7 +104,7 @@ namespace EgeBilgiTaskCase.Persistence.Services.Characters
             if (string.IsNullOrEmpty(value))
                 return 0;
 
-            var existingParameter = _dbParameterReadRepository.GetSingleEntityAsync(p => p.DBParameterName1 == value && p.DbParameterTypeId == parameterTypeId).Result;
+            var existingParameter = _dbParameterService.GetEntity(p => p.DBParameterName1 == value && p.DbParameterTypeId == parameterTypeId).Result;
             if (existingParameter != null)
                 return existingParameter.Id;
 
@@ -127,6 +121,7 @@ namespace EgeBilgiTaskCase.Persistence.Services.Characters
             return savedParameter.Id;
         }
 
+        
         public int ExtractIdFromUrl(string url)
         {
             if (string.IsNullOrEmpty(url))
@@ -135,11 +130,11 @@ namespace EgeBilgiTaskCase.Persistence.Services.Characters
             var parts = url.Split('/');
             return int.Parse(parts.Last());
         }
+
         public List<int> ExtractIdsFromUrls(List<string> urls)
         {
             return urls.Select(url => ExtractIdFromUrl(url)).ToList();
         }
-
 
 
         public async Task<OptResult<PaginatedList<Character_GridView_Dto>>> GetAllPagedCharacterAsync(Character_Index_Dto model)
@@ -149,56 +144,42 @@ namespace EgeBilgiTaskCase.Persistence.Services.Characters
             PaginatedList<Character> pagedDatas;
 
             pagedDatas = await _characterReadRepositoryService.GetDataPagedAsyncInclude(predicate, query => query.Include(c => c.CharacterDetails), model.PageIndex, model.Take, model.OrderBy, true);
-            
+
             var gridViewDtoList = new List<Character_GridView_Dto>();
 
             foreach (var character in pagedDatas.Data)
             {
-                string? statusName = await _dbParameterReadRepository.GetValueAsync(
-                    "DbParameters",
-                    "DBParameterName1",
-                    $"Id = {character.CharacterDetails.StatusId}",2);
-                
-                string? speciesName = await _dbParameterReadRepository.GetValueAsync(
-                    "DbParameters",
-                    "DBParameterName1",
-                    $"Id = {character.CharacterDetails.SpeciesId}", 2);
-                
-                string? typeName = await _dbParameterReadRepository.GetValueAsync(
-                    "DbParameters",
-                    "DBParameterName1",
-                    $"Id = {character.CharacterDetails.TypeId}", 2);
-           
-                string? lastKnownLocation = await _locationReadRepository.GetValueAsync(
-                    "Locations",
-                    "Name",
-                    $"LocationApiId = {character.CharacterDetails.LocationId}", 2);
+                string? statusName = await _dbParameterService.GetValue("", "DBParameterName1", $"Id = {character.CharacterDetails.StatusId}", 2);
+
+
+                string? speciesName = await _dbParameterService.GetValue("","DBParameterName1",$"Id = {character.CharacterDetails.SpeciesId}", 2);
+
+                string? typeName = await _dbParameterService.GetValue("","DBParameterName1",$"Id = {character.CharacterDetails.TypeId}", 2);
+
+                string? lastKnownLocation = await _locationService.GetValue("","Name",$"LocationApiId = {character.CharacterDetails.LocationId}", 2);
 
 
                 var episodesIds = character.CharacterDetails.EpisodeIds;
                 var firstEpisodeId = episodesIds.FirstOrDefault();
 
-                string? firstSeen = await _episodeReadRepository.GetValueAsync(
-                    "Episodes",
-                    "Name",
-                    $"EpisodeApiId = {firstEpisodeId}", 2);
-
-
+                string? firstSeen = await _episodeService.GetValue("","Name",$"EpisodeApiId = {firstEpisodeId}", 2);
 
                 var dto = new Character_GridView_Dto
                 {
+                    CharacterId = character.Id,
+                    CharacterApiId = character.CharacterApiId,
+                    CharacterGuid = character.Guid,
                     CharacterName = character.Name,
-                    Image= character.Image,
+                    Image = character.Image,
                     LastKnownLocationName = lastKnownLocation,
                     FirstSeenName = firstSeen,
                     SpeciesName = speciesName,
                     Gender = character.Gender,
                     StatusName = statusName
                 };
-
                 gridViewDtoList.Add(dto);
             }
-            
+
             var paginatedResult = new PaginatedList<Character_GridView_Dto>
             {
                 Data = gridViewDtoList,
@@ -212,7 +193,6 @@ namespace EgeBilgiTaskCase.Persistence.Services.Characters
                     HasPreviousPage = pagedDatas.Pagination.HasPreviousPage
                 }
             };
-
 
             return await OptResult<PaginatedList<Character_GridView_Dto>>.SuccessAsync(paginatedResult, Messages.Successfull);
         }

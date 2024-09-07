@@ -1,4 +1,4 @@
-﻿using EgeBilgiTaskCase.Application.Abstractions.Services.Character;
+﻿using EgeBilgiTaskCase.Application.Abstractions.Services.Common;
 using EgeBilgiTaskCase.Application.Common.DTOs.RickAndMorty;
 using EgeBilgiTaskCase.Domain.Entities.Character;
 using Newtonsoft.Json;

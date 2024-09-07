@@ -1,5 +1,4 @@
-﻿using EgeBilgiTaskCase.Application.Abstractions.Services.Character;
-using EgeBilgiTaskCase.Application.Common.DTOs.RickAndMorty;
+﻿using EgeBilgiTaskCase.Application.Common.DTOs.RickAndMorty;
 using EgeBilgiTaskCase.Domain.Entities.Character;
 
 namespace EgeBilgiTaskCase.Persistence.Services.Common
@@ -23,6 +22,18 @@ namespace EgeBilgiTaskCase.Persistence.Services.Common
             _dbParameterReadRepository = dbParameterReadRepository;
             _dbParameterWriteRepository = dbParameterWriteRepository;
         }
+
+
+        public async Task<string> GetValue(string? table, string column, string sqlQuery, int? dbType)
+        {
+            return await ExceptionHandler.HandleAsync(async () =>
+            {
+                var data = await _locationReadRepositoryService.GetValueAsync("Locations", column, sqlQuery, 2);
+                if (data != null) return data;
+                return Messages.NullData;
+            });
+        }
+
 
         public async Task<int> SaveOrGetLocationParameterId(string name, int typeId, int dimensionId)
         {
@@ -48,7 +59,6 @@ namespace EgeBilgiTaskCase.Persistence.Services.Common
             await _dbParameterWriteRepository.SaveChanges();
             return savedLocationParameter.Id;
         }
-
 
         //
         public async Task<int> SaveOrGetDbParameterIdAsync(string value, int parameterTypeId, int parentId)

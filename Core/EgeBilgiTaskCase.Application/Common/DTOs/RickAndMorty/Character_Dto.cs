@@ -23,6 +23,9 @@
 
     public class Character_GridView_Dto
     {
+        public int CharacterId { get; set; }
+        public int CharacterApiId { get; set; }
+        public Guid CharacterGuid { get; set; }
         public string CharacterName { get; set; }
         public string LastKnownLocationName { get; set; }
         public string? EpisodeName { get; set; }

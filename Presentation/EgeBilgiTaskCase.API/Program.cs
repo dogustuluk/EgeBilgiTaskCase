@@ -1,4 +1,3 @@
-using EgeBilgiTaskCase.Application.Abstractions.Services.Character;
 using EgeBilgiTaskCase.Application.Common.DTOs.RickAndMorty;
 using EgeBilgiTaskCase.Infrastructure;
 using EgeBilgiTaskCase.Infrastructure.Services;
@@ -7,6 +6,7 @@ using HospitalManagement.Application;
 using HospitalManagement.Persistence;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using EgeBilgiTaskCase.Application.Abstractions.Services.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,7 +1,7 @@
 ﻿using EgeBilgiTaskCase.Application.Common.DTOs.RickAndMorty;
 using EgeBilgiTaskCase.Domain.Entities.Character;
 
-namespace EgeBilgiTaskCase.Application.Abstractions.Services.Character
+namespace EgeBilgiTaskCase.Application.Abstractions.Services.Common
 {
     public interface IRickAndMortyApiService
     {

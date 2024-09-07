@@ -107,7 +107,7 @@ namespace HospitalManagement.Persistence.Services.Management
         {
             return await ExceptionHandler.HandleAsync(async () =>
             {
-                var data = await _readRepository.GetValueAsync("DbParameters", column, sqlQuery, 1);
+                var data = await _readRepository.GetValueAsync("DbParameters", column, sqlQuery, 2);
                 if (data != null) return data;
                 return Messages.NullData;
             });
@@ -124,6 +124,22 @@ namespace HospitalManagement.Persistence.Services.Management
                     returnDataList.Add(new DataList1() { Guid = "", Id = data.Id.ToString(), Name = data.DBParameterName1.ToString() });
                 }
                 return returnDataList;
+            });
+        }
+
+        public async Task<bool> ExistsDbParameterAsync(Expression<Func<DbParameter, bool>> predicate)
+        {
+            return await ExceptionHandler.HandleAsync(async () =>
+            {
+                return await _readRepository.ExistsAsync(predicate);
+            });
+        }
+
+        public async Task<DbParameter> GetEntity(Expression<Func<DbParameter, bool>> method, bool tracking = true)
+        {
+            return await ExceptionHandler.HandleAsync(async () =>
+            {
+                return await _readRepository.GetSingleEntityAsync(method);
             });
         }
     }

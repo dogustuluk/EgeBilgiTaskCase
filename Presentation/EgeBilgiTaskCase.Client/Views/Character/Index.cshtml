@@ -1,0 +1,106 @@
+﻿@using EgeBilgiTaskCase.Client.Models.Character;
+@model Character_AdminIndex_ViewModel
+@inject AAAService _AAAService
+
+<!DOCTYPE html>
+<div class="page-body">
+    <div class="left-header col horizontal-wrapper ps-0 d-flex align-items-center mb-2">
+        <div class="left-menu-header">
+            <h2>@Model.SubPageTitle</h2>
+        </div>
+        <div class="ms-auto">
+            <a class="btn btn-primary" href="/Character/AddNew">Yeni Karakter Ekle</a>
+        </div>
+    </div>
+    <form asp-controller="Character" asp-action="Index" method="get">
+
+        <div class="container-fluid basic_table">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="row mb-3">
+                            <div class="mt-3 col-sm-4">
+                                <input asp-for="SearchText" class="form-control" type="text" placeholder="ARA..." />
+                            </div>
+                            <div class="col-sm-4">
+                                <span class="FormLabel-b">Durum</span>
+                                <select class="form-select" name="StatusId" asp-for="StatusId">
+                                    <option value="0">Hepsi</option>
+                                    <option value="2">Canlı</option>
+                                    <option value="5">Bilinmeyen</option>
+                                    <option value="6">Ölü</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4 d-flex align-items-end">
+                                <button type="submit" class="btn btn-secondary">Filtreyi Uygula</button>
+                            </div>
+                            <div class="col-sm-4">
+                                <a asp-controller="Character" asp-action="Index" class="F12 text-decoration-underline ms-3">
+                                    Filtreleri Temizle
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col col-sm-2">
+                                <select class="form-select form-select-sm F12" name="OrderBy" asp-for="@Model.OrderBy" onchange="this.form.submit()">
+                                    <option value="Id ASC">Eklenme Tarihi Artan</option>
+                                    <option value="Id Desc">Eklenme Tarihi Azalan</option>
+                                    <option value="Name ASC">Karakter Adı Artan</option>
+                                    <option value="Name DESC">Karakter Adı Azalan</option>
+                                </select>
+                            </div>
+                            <div class="col text-end Rb">
+                                Toplam
+                                <span class="text-danger">@Model.MyPagination.TotalRecords</span>
+                                Kayıt
+                            </div>
+                        </div>
+                        <div class="card-header">
+                            <h4>Karakter Listesi</h4>
+                        </div>
+                        <div class="table-responsive theme-scrollbar">
+                            <table class="table table-lg table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Id</th> @*resim buraya olabilir*@
+                                        <th scope="col">Durumu</th>
+                                        <th scope="col">Karakter Adi</th>
+                                        <th scope="col">Cinsiyeti</th>
+                                        <th scope="col">Tür Adı</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.MyGridData)
+                                    {
+                                        <tr>
+                                            <th scope="row">
+                                                <div>
+                                                    <img src="@item.Image" alt="Image" style="width: 100px; height: 100px;" />
+                                                    <br />
+                                                    <small>@item.Id</small>
+                                                </div>
+                                            </th>
+                                            <td>@item.StatusName</td>
+                                            <td>@item.CharacterName</td>
+                                            <td>@item.Gender</td>
+                                            <td>@item.SpeciesName</td>
+                                            <td class="text-end">
+                                                <a class="btn btn-info" href="/Character/Update?Guid=@item.Guid">Detay</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @if (Model.MyPagination != null)
+            {
+                <partial name="~/Views/Shared/Pagination.cshtml" model=@Model.MyPagination />
+            }
+        </div>
+    </form>
+
+</div>
+

@@ -1,4 +1,4 @@
-﻿using EgeBilgiTaskCase.Application.Abstractions.Services.Character;
+﻿using EgeBilgiTaskCase.Application.Abstractions.Services.Common;
 using EgeBilgiTaskCase.Persistence.Services.Characters;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

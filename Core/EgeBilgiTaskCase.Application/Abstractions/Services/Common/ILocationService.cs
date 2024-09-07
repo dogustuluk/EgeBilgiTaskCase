@@ -2,13 +2,15 @@
 
 namespace EgeBilgiTaskCase.Application.Abstractions.Services.Common
 {
-    public interface IEpisodeService
+    public interface ILocationService
     {
         Task<string> GetValue(string? table, string column, string sqlQuery, int? dbType);
 
 
 
-        Task SaveAllEpisodeToDatabase();
-        Task SaveEpisodeToDatabase(EpisodeDto episodeDto);
+        Task<int> SaveOrGetLocationParameterId(string name, int typeId, int dimensionId);
+        Task SaveAllLocationToDatabase();
+        Task SaveLocationToDatabase(LocationDto characterDto);
+
     }
 }

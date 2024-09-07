@@ -1,4 +1,5 @@
 ﻿using EgeBilgiTaskCase.Application.Abstractions.Services.Character;
+using EgeBilgiTaskCase.Application.Abstractions.Services.Common;
 using EgeBilgiTaskCase.Application.Common.GenericObjects;
 using EgeBilgiTaskCase.Application.Features.Queries.Character.GetAllPagedCharacter;
 using MediatR;

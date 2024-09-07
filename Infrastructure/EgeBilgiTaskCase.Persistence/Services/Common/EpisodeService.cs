@@ -1,5 +1,4 @@
-﻿using EgeBilgiTaskCase.Application.Abstractions.Services.Character;
-using EgeBilgiTaskCase.Application.Common.DTOs.RickAndMorty;
+﻿using EgeBilgiTaskCase.Application.Common.DTOs.RickAndMorty;
 using EgeBilgiTaskCase.Domain.Entities.Character;
 
 namespace EgeBilgiTaskCase.Persistence.Services.Common
@@ -8,17 +7,29 @@ namespace EgeBilgiTaskCase.Persistence.Services.Common
     public class EpisodeService : IEpisodeService
     {
         private readonly IRickAndMortyApiService _rickAndMortyApiService;
-        private readonly IEpisodeWriteRepository _episodeWriteRepositoryService;
+        private readonly IEpisodeWriteRepository _writeRepository;
+        private readonly IEpisodeReadRepository _readRepository;
         private readonly IMapper _mapper;
 
 
-        public EpisodeService(IRickAndMortyApiService rickAndMortyApiService, IEpisodeWriteRepository episodeWriteRepositoryService, IMapper mapper)
+        public EpisodeService(IRickAndMortyApiService rickAndMortyApiService, IMapper mapper, IEpisodeReadRepository readRepository, IEpisodeWriteRepository writeRepository)
         {
             _rickAndMortyApiService = rickAndMortyApiService;
-            _episodeWriteRepositoryService = episodeWriteRepositoryService;
             _mapper = mapper;
+            _readRepository = readRepository;
+            _writeRepository = writeRepository;
         }
-       
+
+        public async Task<string> GetValue(string? table, string column, string sqlQuery, int? dbType)
+        {
+            return await ExceptionHandler.HandleAsync(async () =>
+            {
+                var data = await _readRepository.GetValueAsync("Episodes", column, sqlQuery, 2);
+                if (data != null) return data;
+                return Messages.NullData;
+            });
+        }
+
 
         //
         public async Task SaveAllEpisodeToDatabase()
@@ -62,8 +73,8 @@ namespace EgeBilgiTaskCase.Persistence.Services.Common
                 UpdatedDate = DateTime.UtcNow
             };
 
-            var data = await _episodeWriteRepositoryService.AddAsyncReturnEntity(episodeEntity);
-            await _episodeWriteRepositoryService.SaveChanges();
+            var data = await _writeRepository.AddAsyncReturnEntity(episodeEntity);
+            await _writeRepository.SaveChanges();
         }
 
 
