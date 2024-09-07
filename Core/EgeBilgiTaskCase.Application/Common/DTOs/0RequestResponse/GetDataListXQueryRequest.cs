@@ -4,5 +4,6 @@
     {
         public string? SelectedText { get; set; }
         public int? Filter { get; set; }
+        public int? Filter2 { get; set; }
     }
 }

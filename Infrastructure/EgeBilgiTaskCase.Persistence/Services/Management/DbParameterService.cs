@@ -9,7 +9,7 @@ namespace HospitalManagement.Persistence.Services.Management
         private readonly IDbParameterReadRepository _readRepository;
         private readonly IDbParameterWriteRepository _writeRepository;
         private readonly IMapper _mapper;
-      //  private readonly DbParameterSpecifications _dbParameterSpecifications;
+        //  private readonly DbParameterSpecifications _dbParameterSpecifications;
         public DbParameterService(IDbParameterReadRepository readRepository, IDbParameterWriteRepository writeRepository, IMapper mapper)
         {
             _readRepository = readRepository;
@@ -62,7 +62,7 @@ namespace HospitalManagement.Persistence.Services.Management
         {
             return await ExceptionHandler.HandleOptResultAsync(async () =>
             {
-              //  var predicate = _dbParameterSpecifications.GetAllPagedPredicate(model);
+                //  var predicate = _dbParameterSpecifications.GetAllPagedPredicate(model);
                 if (string.IsNullOrEmpty(model.OrderBy)) model.OrderBy = "Id DESC";
 
                 PaginatedList<DbParameter> pagedDbParameters;
@@ -113,12 +113,12 @@ namespace HospitalManagement.Persistence.Services.Management
             });
         }
 
-        public async Task<List<DataList1>> GetDataListAsync()
+        public async Task<List<DataList1>> GetDataListAsync(int? dbParameterTypeId, int? parentId)
         {
             return await ExceptionHandler.HandleAsync(async () =>
             {
                 List<DataList1> returnDataList = new();
-                var datas = await _readRepository.GetDataAsync(a => a.Id > 0, "", 10000, "DbParameterName ASC");
+                var datas = await _readRepository.GetDataAsync(a => (dbParameterTypeId == null || a.DbParameterTypeId == dbParameterTypeId) && (parentId == null || a.ParentId == parentId), "", 10000, "DbParameterName1 ASC");
                 foreach (var data in datas)
                 {
                     returnDataList.Add(new DataList1() { Guid = "", Id = data.Id.ToString(), Name = data.DBParameterName1.ToString() });
@@ -142,5 +142,7 @@ namespace HospitalManagement.Persistence.Services.Management
                 return await _readRepository.GetSingleEntityAsync(method);
             });
         }
+
+
     }
 }

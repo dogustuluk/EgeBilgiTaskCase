@@ -11,7 +11,7 @@ namespace EgeBilgiTaskCase.Application.Abstractions.Services.Management
         Task<List<DbParameter>> GetAllDbParameterAsync(Expression<Func<DbParameter, bool>>? predicate, string? include);
         Task<OptResult<PaginatedList<DbParameter>>> GetAllPagedDbParameterAsync(GetAllPaged_DBParameter_Index_Dto model);
         Task<string> GetValue(string? table, string column, string sqlQuery, int? dbType);
-        Task<List<DataList1>> GetDataListAsync();
+        Task<List<DataList1>> GetDataListAsync(int? dbParameterTypeId, int? parentId);
         Task<bool> ExistsDbParameterAsync(Expression<Func<DbParameter, bool>> predicate);
         Task<DbParameter> GetEntity(Expression<Func<DbParameter, bool>> method, bool tracking = true);
     }

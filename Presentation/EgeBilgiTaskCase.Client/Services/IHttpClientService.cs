@@ -14,6 +14,7 @@ namespace EgeBilgiTaskCase.Client.Services
 
         //Task<T> GetAsync<T>(RequestParameters requestParameters, string id = null);
         Task<OptResult<T>> GetAsync<T>(RequestParameters requestParameters, string id = null);
+        Task<List<DataList1>> GetDataListAsync(RequestParameters requestParameters, string id = null);
         Task<T> PostAsync2<T>(RequestParameters requestParameters, object body);
         Task<OptResult<OptResultClient>> PostAsync(RequestParameters requestParameters, object body);
         Task<T> PutAsync<T>(RequestParameters requestParameters, object body);

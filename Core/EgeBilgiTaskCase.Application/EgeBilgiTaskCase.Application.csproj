@@ -29,7 +29,6 @@
 	  <Folder Include="Features\Queries\DbParameterType\GetByIdorGuidDbParameterType\" />
 	  <Folder Include="Features\Queries\DbParameterType\GetPagedDbParameterType\" />
 	  <Folder Include="Features\Queries\DbParameterType\GetValueDbParameterType\" />
-	  <Folder Include="Features\Queries\DbParameter\GetDataListDbParameter\" />
 	  <Folder Include="Features\Queries\DbParameter\GetAllDbParameter\" />
 	  <Folder Include="Features\Queries\DbParameter\GetPagedDbParameter\" />
 	  <Folder Include="Features\Queries\DbParameter\GetByIdorGuidDbParameter\" />

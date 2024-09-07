@@ -6,6 +6,7 @@ using EgeBilgiTaskCase.Client.Models;
 using EgeBilgiTaskCase.Client.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using EgeBilgiTaskCase.Application.Common.DTOs._0RequestResponse;
 
 namespace EgeBilgiTaskCase.Client.Controllers
 {
@@ -42,16 +43,51 @@ namespace EgeBilgiTaskCase.Client.Controllers
                 myData.Add(new Character_AdminGrid_ViewModel()
                 {
                     Id = data.CharacterId,
-                    CharacterApiId= data.CharacterApiId,
+                    CharacterApiId = data.CharacterApiId,
                     Guid = data.CharacterGuid,
                     CharacterName = data.CharacterName,
                     Gender = data.Gender,
                     Image = data.Image,
                     SpeciesName = data.SpeciesName,
                     StatusName = data.StatusName,
-                    
+
                 });
             }
+
+
+            // var speciesString = QueryStringHelperService.ToQueryString(model.SpeciesId);
+            //  var speciesString = "ParentId=4&DbParameterType=1";
+
+
+            //var species_DDL_Response = await _httpClientService.GetDataListAsync(
+            //new RequestParameters
+            //{
+            //    Action = "GetDataListDbParameter",
+            //    Controller = "DbParameter",
+            //    Folder = "Management",
+            //    QueryString = speciesString
+            //});
+
+            var speciesString = QueryStringHelperService.ToQueryString(new
+            {
+                DbParameterTypeId = 1,
+                ParentId = 4
+            });
+            var species_DDL_Response = await _httpClientService.GetDataListAsync(
+                new RequestParameters
+                {
+                    Action = "GetDataListDbParameter",
+                    Controller = "DbParameter",
+                    Folder = "Management",
+                    QueryString = speciesString
+                });
+
+
+
+            List<DataList1> species_DDL = species_DDL_Response;
+
+
+
 
             Character_AdminIndex_ViewModel MYRESULT = new Character_AdminIndex_ViewModel()
             {
@@ -61,11 +97,12 @@ namespace EgeBilgiTaskCase.Client.Controllers
                 MyPagination = response.Data.Pagination,
                 SearchText = model.SearchText,
                 LocationId = model.LocationId,
-                SpeciesId = model.SpeciesId,
+               // SpeciesId = model.SpeciesId,
                 StatusId = model.StatusId,
                 Take = model.Take,
                 PageIndex = model.PageIndex,
-                OrderBy = model.OrderBy
+                OrderBy = model.OrderBy,
+                Species_DDL = species_DDL
             };
 
             return View(MYRESULT);

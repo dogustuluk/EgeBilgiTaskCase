@@ -31,6 +31,20 @@
                                     <option value="6">Ölü</option>
                                 </select>
                             </div>
+                            <div class="col-sm-4">
+
+                                <label class="FormLabel-b">Species</label>
+                               @* <select class="form-select Select2 w-100" asp-items="@(new SelectList(Model.Species_DDL, "Id", "Name"))" asp-for="SpeciesId">
+                                </select>*@
+                                <select class="form-select Select2 w-100" asp-for="SpeciesId">
+                                    <option value="0">Hepsi</option>
+                                    @foreach (var item in Model.Species_DDL)
+                                    {
+                                        <option value="@item.Id">@item.Name</option>
+                                    }
+                                </select>
+                            </div>
+
                             <div class="col-sm-4 d-flex align-items-end">
                                 <button type="submit" class="btn btn-secondary">Filtreyi Uygula</button>
                             </div>

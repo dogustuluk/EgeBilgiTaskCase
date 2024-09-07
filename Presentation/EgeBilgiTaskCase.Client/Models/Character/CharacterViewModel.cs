@@ -37,12 +37,16 @@ namespace EgeBilgiTaskCase.Client.Models.Character
         public int PageIndex { get; set; } = 1;
         public string? SearchText { get; set; }
         public int? StatusId { get; set; }
-        public int? SpeciesId { get; set; }
+        public int? TypeId { get; set; } = 0;
+        public int? SpeciesDbParameterTypeId { get; set; } = 1;
+        public int? SpeciesId { get; set; } = 0;
         public int? LocationId { get; set; }
         public int Take { get; set; } = 15;
         public string? OrderBy { get; set; } = "Id ASC";
         public List<Character_AdminGrid_ViewModel>? MyGridData { get; set; }
         public Pagination? MyPagination { get; set; }
+
+        public List<DataList1>? Species_DDL { get; set; }
     }
     public class Character_AdminGrid_ViewModel
     {

@@ -81,6 +81,26 @@ namespace EgeBilgiTaskCase.Client.Services
 
             return optResult;
         }
+        public async Task<List<DataList1>> GetDataListAsync(RequestParameters requestParameters, string id = null)
+        {
+            var url = BuildUrl(requestParameters, id);
+
+            var request = CreateRequest(HttpMethod.Get, url, headers: requestParameters.Headers);
+
+            var response = await SendRequestAsync(request);
+
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+
+            var dataList = JsonSerializer.Deserialize<List<DataList1>>(jsonResponse, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+            if (dataList == null)
+                throw new Exception("Deserialization failed or response was null.");
+
+            return dataList;
+        }
 
         //public async Task<string> PostAsync(RequestParameters requestParameters, object body)
         //{
