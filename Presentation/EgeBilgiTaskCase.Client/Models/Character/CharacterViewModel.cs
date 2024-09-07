@@ -11,11 +11,10 @@ namespace EgeBilgiTaskCase.Client.Models.Character
         public int? StatusId { get; set; }
         public int? SpeciesId { get; set; }
         public int? LocationId { get; set; }
-        public int Take { get; set; } = 25;
+        public int Take { get; set; } = 6;
         public string? OrderBy { get; set; } = "Id ASC";
         public List<Character_GridView_ViewModel>? MyGridData { get; set; }
         public Pagination? MyPagination { get; set; }
-
     }
 
     public class Character_GridView_ViewModel

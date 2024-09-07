@@ -168,31 +168,31 @@ namespace EgeBilgiTaskCase.Persistence.Services.Characters
                     "DbParameters",
                     "DBParameterName1",
                     $"Id = {character.CharacterDetails.TypeId}", 2);
-                
-                string? firstSeen = await _locationReadRepository.GetValueAsync(
-                    "Locations",
-                    "Name",
-                    $"LocationApiId = {character.CharacterDetails.LocationId}", 2); 
-                
+           
                 string? lastKnownLocation = await _locationReadRepository.GetValueAsync(
                     "Locations",
                     "Name",
-                    $"LocationApiId = {character.CharacterDetails.OriginId}", 2);
+                    $"LocationApiId = {character.CharacterDetails.LocationId}", 2);
+
+
+                var episodesIds = character.CharacterDetails.EpisodeIds;
+                var firstEpisodeId = episodesIds.FirstOrDefault();
+
+                string? firstSeen = await _episodeReadRepository.GetValueAsync(
+                    "Episodes",
+                    "Name",
+                    $"EpisodeApiId = {firstEpisodeId}", 2);
+
 
 
                 var dto = new Character_GridView_Dto
                 {
-                  //  CharacterId = character.Id,
                     CharacterName = character.Name,
                     Image= character.Image,
-                //    LocationId = character.CharacterDetails.LocationId,
                     LastKnownLocationName = lastKnownLocation,
-                //    OriginId = character.CharacterDetails.OriginId,
                     FirstSeenName = firstSeen,
-               //     SpeciesId = character.CharacterDetails.SpeciesId,
                     SpeciesName = speciesName,
                     Gender = character.Gender,
-              //      StatusId= character.CharacterDetails.StatusId,
                     StatusName = statusName
                 };
 

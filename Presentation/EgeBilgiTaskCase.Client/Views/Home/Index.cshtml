@@ -57,6 +57,18 @@
 
         .heroCard {
             color: white;
+            height:220px;
+        }
+
+        .characterDetailCard {
+            position: absolute;
+            margin-top: -25px;
+            margin-left: -15px;
+        }
+        .characterDetailCardBottom{
+            position:absolute;
+            margin-top: -45px;
+            font-size:15px;
         }
     </style>
     <title>Title</title>
@@ -83,33 +95,97 @@
                 </div>
             </div>
         </div>
-        <div class="container-fluid" style="padding: 0 25px; background-color:#272B33;">
-            <div class="row" style="margin-top:-30px; padding:90px 0px;">
-                @foreach (var data in Model.MyGridData)
-                {
-                    <div class="col-xl-4 col-md-6 mb-4">
-                        <div class="card heroCard" style="background-color:#3C3E44; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);">
-                            <div class="row g-0">
-
-
-                                <div class="col-md-4">
-                                    <img src="@data.Image" class="img-fluid" style="border-radius: 10px 0 0 10px;">
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Card title</h5>
-                                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                        <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
-                                    </div>
-                                </div>
-                                }
-
-
-                            </div>
+        <form asp-controller="Home" asp-action="Index" method="get">
+            <div class="container-fluid" style="padding: 0 25px; background-color:#272B33;">
+                <div class="row" style="margin-top:-30px; padding:90px 0px;">
+                    <div class="row mb-3">
+                        <div class="mt-3 col-sm-4">
+                            <input asp-for="SearchText" class="form-control" type="text" placeholder="ARA..." />
+                        </div>
+                        <div class="col-sm-4">
+                            <span class="FormLabel-b">Durum</span>
+                            <select class="form-select" name="StatusId" asp-for="StatusId">
+                                <option value="0">Hepsi</option>
+                                <option value="2">Canlı</option>
+                                <option value="5">Bilinmeyen</option>
+                                <option value="6">Ölü</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-4 d-flex align-items-end">
+                            <button type="submit" class="btn btn-secondary">Filtreyi Uygula</button>
+                        </div>
+                        <div class="col-sm-4">
+                            <a asp-controller="Home" asp-action="Index" class="F12 text-decoration-underline ms-3">
+                                Filtreleri Temizle
+                            </a>
                         </div>
                     </div>
+                    <div class="row mb-3">
+                        <div class="col col-sm-2">
+                            <select class="form-select form-select-sm F12" name="OrderBy" asp-for="@Model.OrderBy" onchange="this.form.submit()">
+                                <option value="Id ASC">Eklenme Tarihi Artan</option>
+                                <option value="Id Desc">Eklenme Tarihi Azalan</option>
+                                <option value="Name ASC">Karakter Adı Artan</option>
+                                <option value="Name DESC">Karakter Adı Azalan</option>
+                            </select>
+                        </div>
+                        <div class="col text-end Rb text-danger">
+                            Toplam
+                            <span class="text-danger">@Model.MyPagination.TotalRecords</span>
+                            Kayıt
+                        </div>
+                    </div>
+                    @foreach (var data in Model.MyGridData)
+                    {
+                        <div class="col-xl-4 col-md-6 mb-4">
+                            <div class="card heroCard" style="background-color:#3C3E44; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);">
+                                <div class="row g-0">
+                                    <div class="col-md-4">
+                                        <img src="@data.Image" class="img-fluid" style="border-radius: 10px 0 0 10px; height:220px;">
+                                    </div>
+                                    <div class="col-md-8 characterDetailCard">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><h4>@data.CharacterName</h4></h5>
+                                            <span style="display: flex; align-items: center;">
+                                                @{
+                                                    var backgroundImage = data.StatusName switch
+                                                    {
+                                                        "Dead" => "/images/icons/Status-1.png",
+                                                        "Alive" => "/images/icons/Status1.png",
+                                                        "Unknown" => "/images/icons/Status0.png",
+                                                        _ => "black"
+                                                    };
+                                                }
+                                                <span style="background-image: url('@backgroundImage'); width: 15px; height: 15px; display: block; background-size: contain; background-position: center; margin-right: 5px;"> </span>
+                                                <span>@data.StatusName - @data.SpeciesName</span>
+                                            </span>
+                                        </div>
+                                        <div class="card-body characterDetailCardBottom">
+                                            <span>
+                                                <small class="text-body-secondary" style="color:#9E9687">
+                                                    Last known location:
+                                                </small><br>
+                                                <span>@data.LastKnownLocationName</span>
+                                            </span><br>
+                                            <span>
+                                                <small class="text-body-secondary" style="color:#9E9687">
+                                                    First seen in:
+                                                </small><br>
+                                                <span>@data.FirstSeenName</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div>
+                @if (Model.MyPagination != null)
+                {
+                    <partial name="~/Views/Shared/Pagination.cshtml" model=@Model.MyPagination />
+                }
             </div>
-        </div>
-    </body>
-    </html>
+        </form>
+    </div>
+</body>
+</html>

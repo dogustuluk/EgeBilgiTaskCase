@@ -4,6 +4,7 @@ using EgeBilgiTaskCase.Client.HelperServices;
 using EgeBilgiTaskCase.Client.Models;
 using EgeBilgiTaskCase.Client.Models.Character;
 using EgeBilgiTaskCase.Client.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -18,6 +19,8 @@ namespace EgeBilgiTaskCase.Client.Controllers
             _httpClientService = httpClientService;
         }
 
+        [AllowAnonymous]
+        [HttpGet]
         public async Task<IActionResult> Index(Character_Index_ViewModel model)
         {
             var queryString = QueryStringHelperService.ToQueryString(model);
@@ -43,8 +46,8 @@ namespace EgeBilgiTaskCase.Client.Controllers
                     FirstSeenName = data.FirstSeenName,
                     Gender = data.Gender,
                     Image = data.Image,
-                    LastKnownLocationName= data.LastKnownLocationName,
-                    SpeciesName= data.SpeciesName,
+                    LastKnownLocationName = data.LastKnownLocationName,
+                    SpeciesName = data.SpeciesName,
                     StatusName = data.StatusName
                 });
             }
