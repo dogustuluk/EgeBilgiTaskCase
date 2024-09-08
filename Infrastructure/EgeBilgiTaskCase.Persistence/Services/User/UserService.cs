@@ -26,22 +26,43 @@ namespace HospitalManagement.Persistence.Services.User
 
         public async Task<OptResult<CreateUser_Dto>> CreateAsync(CreateUser_Dto model)
         {
-            var appUser = _mapper.Map<AppUser>(model);
-
-            IdentityResult result = await _userManager.CreateAsync(appUser, model.Password);
-            
-            OptResult<CreateUser_Dto> response = new() { Succeeded = result.Succeeded};
-
-            if (result.Succeeded)
+            try
             {
-                response.Code = 200; //200?204?
-                response.Data = _mapper.Map<CreateUser_Dto>(appUser);
-            }
-            else
-                foreach (var error in result.Errors)
-                    response.Message += $"{error.Code}-{error.Description}\n";
+                var appUser = _mapper.Map<AppUser>(model);
 
-            return response;
+                var existingUserName = await _userManager.FindByNameAsync(model.UserName);
+                if (existingUserName != null)
+                {
+                    return OptResult<CreateUser_Dto>.Failure("UserName already exists.");
+                }
+                var existingEmail = await _userManager.FindByEmailAsync(model.Email);
+                if (existingEmail != null)
+                {
+                    return OptResult<CreateUser_Dto>.Failure("Email already exists.");
+                }
+
+                appUser.Guid = Guid.NewGuid();
+                IdentityResult result = await _userManager.CreateAsync(appUser, model.Password);
+
+                OptResult<CreateUser_Dto> response = new() { Succeeded = result.Succeeded };
+
+                if (result.Succeeded)
+                {
+                    response.Code = 200; //200?204?
+                    response.Data = _mapper.Map<CreateUser_Dto>(appUser);
+                }
+                else
+                    foreach (var error in result.Errors)
+                        response.Message += $"{error.Code}-{error.Description}\n";
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                var err = ex.Message;
+                throw;
+            }
+
         }
         public async Task<OptResult<UpdateUser_Dto>> UpdateAsync(UpdateUser_Dto model)
         {
@@ -60,7 +81,7 @@ namespace HospitalManagement.Persistence.Services.User
         {
             return await ExceptionHandler.HandleOptResultAsync(async () =>
             {
-               //  var predicate = _userSpecifications.GetAllPagedPredicate(model);
+                //  var predicate = _userSpecifications.GetAllPagedPredicate(model);
                 if (string.IsNullOrEmpty(model.OrderBy)) model.OrderBy = "NameSurname ASC";
 
                 PaginatedList<AppUser> pagedUsers;
@@ -98,7 +119,7 @@ namespace HospitalManagement.Persistence.Services.User
             {
                 List<DataList1> returnDataList = new();
 
-                var datas = await _userReadRepository.GetDataAsync(a => a.Id > 0 , "", 10000, "NameSurname ASC");
+                var datas = await _userReadRepository.GetDataAsync(a => a.Id > 0, "", 10000, "NameSurname ASC");
                 foreach (var data in datas)
                 {
                     returnDataList.Add(new DataList1() { Guid = "", Id = data.Id.ToString(), Name = data.NameSurname });
@@ -121,8 +142,8 @@ namespace HospitalManagement.Persistence.Services.User
         {
             if (user == null)
                 throw new ArgumentException(); //custom yap
-            user.RefreshToken= refreshToken;
-            user.RefreshTokenEndDate= accessTokenDate.AddSeconds(addOnAccessTokenDate);
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenEndDate = accessTokenDate.AddSeconds(addOnAccessTokenDate);
             await _userManager.UpdateAsync(user);
         }
     }

@@ -28,17 +28,6 @@ builder.Services.SwaggerOptionsExtension();
 builder.Services.JwtOptionsStartupExtension(builder.Configuration);
 builder.Services.AddScoped<IRickAndMortyApiService, RickAndMortyApiService>();
 
-//var options = new JsonSerializerOptions
-//{
-//    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-//    WriteIndented = true,
-//    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-//    ReferenceHandler = ReferenceHandler.IgnoreCycles // Döngüsel referanslarý yoksay
-//};
-
-// JSON'u deseralize ederken bu ayarlarý kullan
-//var characterListDto = JsonSerializer.Deserialize<CharacterListDto>(content, options);
-
 
 var app = builder.Build();
 
@@ -60,10 +49,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

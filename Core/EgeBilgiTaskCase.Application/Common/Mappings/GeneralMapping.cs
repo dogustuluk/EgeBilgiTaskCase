@@ -24,13 +24,27 @@ namespace EgeBilgiTaskCase.Application.Common.Mappings
             //<PaginatedList<Character>, PaginatedList<GetAllPagedCharacterQueryResponse>>();
 
 
+
+            //CreateMap<CreateUser_Dto, CreateUserCommandResponse>()
+            //    .ForMember(dest => dest.Guid, opt => opt.MapFrom(src => src.Guid))
+            //    .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
+            //    .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email));
+            ////  .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName));
+
+            //CreateMap<AppUser, CreateUser_Dto>().ReverseMap();
+
             CreateMap<CreateUserCommandRequest, CreateUser_Dto>()
-            .ForMember(dest => dest.Guid, opt => opt.Ignore());
-            CreateMap<CreateUser_Dto, CreateUserCommandResponse>()
-                .ForMember(dest => dest.Guid, opt => opt.MapFrom(src => src.Guid));
-              //  .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName));
+            .ForMember(dest => dest.Guid, opt => opt.Ignore())
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email));
+            CreateMap<CreateUser_Dto, AppUser>()
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
+            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email));
             
-            CreateMap<AppUser, CreateUser_Dto>().ReverseMap();
+            CreateMap<CreateUser_Dto, CreateUserCommandResponse>().ReverseMap();
+            
+            CreateMap<CreateUserCommandResponse, OptResult<CreateUserCommandResponse>>();
+
 
 
             CreateMap<DataList1, GetDataListDbParameterQueryResponse>();
