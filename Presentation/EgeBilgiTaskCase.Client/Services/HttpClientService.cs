@@ -177,20 +177,49 @@ namespace EgeBilgiTaskCase.Client.Services
             var url = BuildUrl(requestParameters);
 
             var jsonContent = new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json");
+            var jsonContentString = await jsonContent.ReadAsStringAsync();
+            Console.WriteLine("JSON Content: " + jsonContentString);
 
-            var response = await client.PostAsync(url, jsonContent);
-            response.EnsureSuccessStatusCode();
 
-            var jsonResponse = await response.Content.ReadAsStringAsync();
-
-            Console.WriteLine("JSON Response: " + jsonResponse);
-
-            var result = JsonSerializer.Deserialize<T>(jsonResponse, new JsonSerializerOptions
+            try
             {
-                PropertyNameCaseInsensitive = true
-            });
+                var response = await client.PostAsync(url, jsonContent);
+                response.EnsureSuccessStatusCode();
+                var responseContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine("Response Content: " + responseContent);
+                var result = JsonSerializer.Deserialize<T>(responseContent, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+                return result;
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine("HttpRequestException: " + ex.Message);
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine("Inner Exception: " + ex.InnerException.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception: " + ex.Message);
+            }
 
-            return result;
+
+
+            //response.EnsureSuccessStatusCode();
+
+            //var jsonResponse = await response.Content.ReadAsStringAsync();
+
+            //Console.WriteLine("JSON Response: " + jsonResponse);
+
+            //var result = JsonSerializer.Deserialize<T>(jsonResponse, new JsonSerializerOptions
+            //{
+            //    PropertyNameCaseInsensitive = true
+            //});
+
+            return default;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using EgeBilgiTaskCase.Application.Common.GenericObjects;
+﻿using EgeBilgiTaskCase.Application.Common.DTOs.RickAndMorty;
+using EgeBilgiTaskCase.Application.Common.GenericObjects;
 
 namespace EgeBilgiTaskCase.Client.Models.Character
 {
@@ -62,5 +63,25 @@ namespace EgeBilgiTaskCase.Client.Models.Character
         public int CreatedBy { get; set; }
         public DateTime UpdatedDate { get; set; }
         public int UpdatedBy { get; set; }
+    }
+
+    public class Character_AddNew_ViewModel
+    {
+        public string Name { get; set; }
+        public string Gender { get; set; }
+        public string? Image { get; set; }
+        public int? OriginId { get; set; }
+        public int? LocationId { get; set; }
+        public List<int>? EpisodeIds { get; set; }
+        public int? StatusId { get; set; }
+        public int? TypeId { get; set; }
+        public int? SpeciesId { get; set; }
+        public string? Desc { get; set; }
+        public CharacterDetail_AddNew_Dto? CharacterDetail { get; set; }
+        public List<DataList1>? Species_DDL { get; set; }
+        public List<DataList1>? Type_DDL { get; set; }
+        public List<DataList1>? Episodes_DDL { get; set; }
+
+        public MyResult? MyResult { get; set; }
     }
 }

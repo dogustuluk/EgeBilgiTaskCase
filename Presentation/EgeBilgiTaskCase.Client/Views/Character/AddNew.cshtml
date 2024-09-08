@@ -1,0 +1,175 @@
+﻿@using EgeBilgiTaskCase.Client.Models.Character;
+@model Character_AddNew_ViewModel
+<!DOCTYPE html>
+<div class="page-body">
+    <div class="left-header col horizontal-wrapper ps-0 d-flex align-items-center mb-2">
+        <div class="left-menu-header">
+            @* <h2>@Model.SubPageTitle</h2>*@
+            <h2>Karakter Ekleme</h2>
+        </div>
+    </div>
+    <form asp-controller="Character" asp-action="AddNew" method="post">
+        <div class="container-fluid add-product">
+            <div class="row">
+                <div class="col-xl-6">
+                    @if (Model.MyResult == null)
+                    {
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="product-info">
+                                    <h5>Karakter Genel Bilgileri</h5>
+                                    <div class="product-group">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Karakter Adı</label>
+                                                    <input class="form-control" name="Name" asp-for="Name" placeholder="Karakter Adını Giriniz" type="text"><span class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Cinsiyeti</label>
+                                                    <select class="form-select" name="Gender" asp-for="Gender">
+                                                        <option value="-">Seçiniz</option>
+                                                        <option value="Male">Erkek</option>
+                                                        <option value="Female">Kadin</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h5 class="mt-4">Karakter Detaylari (Opsiyonel)</h5>
+                                    <div class="product-group">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Karakterin Bulunduğu Bölümler</label>
+                                                    <select asp-for="CharacterDetail.EpisodeIds" class="form-select">
+                                                        <option value="0">Seçiniz</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Type</label>
+                                                    <select class="form-select Select2 w-100" asp-for="CharacterDetail.TypeId">
+                                                        <option value="0">Tip</option>
+                                                        @foreach (var item in Model.Type_DDL)
+                                                        {
+                                                            <option value="@item.Id">@item.Name</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Tür</label>
+                                                    <select class="form-select Select2 w-100" asp-for="CharacterDetail.SpeciesId">
+                                                        <option value="0">Seçiniz</option>
+                                                        @foreach (var item in Model.Species_DDL)
+                                                        {
+                                                            <option value="@item.Id">@item.Name</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Durumu</label>
+                                                    <select class="form-select" asp-for="CharacterDetail.StatusId">
+                                                        <option value="-10">Seçiniz</option>
+                                                        <option value="2">Canlı</option>
+                                                        <option value="5">Bilinmiyor</option>
+                                                        <option value="6">Ölü</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="product-info">
+                                        <h5>Karakter Resmi</h5>
+                                        <div class="dz-message needsclick">
+                                            <i class="icon-cloud-up"></i>
+                                            <h6>Dosyaları buraya bırakın veya yüklemek için tıklayın.</h6>
+                                        </div>
+                                        <h5 class="mt-4">Açıklama Ekle(Opsiyonel)</h5>
+                                        <div class="product-group">
+                                            <div class="row">
+                                                <div class="email-wrapper">
+                                                    <div class="theme-form">
+                                                        <div class="form-group">
+                                                            <label>Content:</label>
+                                                            <textarea asp-for="CharacterDetail.Desc" id="text-box" name="text-box" cols="10" rows="2"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @* <div class="row">
+                                        <div class="col-sm-12">
+                                        <div class="mb-3">
+                                        <label class="form-label">Price</label>
+                                        <input class="form-control" type="number">
+                                        </div>
+                                        </div>
+                                        </div>*@
+                                        </div>
+                                    </div>
+                                    <div class="mt-4">
+                                        <div class="row">
+                                            <div class="col-sm-12 text-end">
+                                                <button type="submit" class="btn btn-primary me-3">Ekle</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        @await Html.PartialAsync("~/Views/Shared/OptResult.cshtml", Model.MyResult);
+                    }
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+<script src="../assets/js/jquery-3.6.0.min.js"></script>
+<!-- Bootstrap js-->
+<script src="../assets/js/bootstrap/bootstrap.bundle.min.js"></script>
+<!-- feather icon js-->
+<script src="../assets/js/icons/feather-icon/feather.min.js"></script>
+<script src="../assets/js/icons/feather-icon/feather-icon.js"></script>
+<!-- scrollbar js-->
+<script src="../assets/js/scrollbar/simplebar.js"></script>
+<script src="../assets/js/scrollbar/custom.js"></script>
+<!-- Sidebar jquery-->
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/sidebar-menu.js"></script>
+<script src="../assets/js/editor/ckeditor/ckeditor.js"></script>
+<script src="../assets/js/editor/ckeditor/adapters/jquery.js"></script>
+<script src="../assets/js/dropzone/dropzone.js"></script>
+<script src="../assets/js/dropzone/dropzone-script.js"></script>
+<script src="../assets/js/email-app.js"></script>
+<script src="../assets/js/form-validation-custom.js"></script>
+<!-- Template js-->
+<script src="../assets/js/script.js"></script>
+<!-- login js-->

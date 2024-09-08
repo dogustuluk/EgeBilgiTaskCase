@@ -1,12 +1,16 @@
-﻿using EgeBilgiTaskCase.Application.Common.GenericObjects;
+﻿using EgeBilgiTaskCase.Application.Common.DTOs.RickAndMorty;
+using EgeBilgiTaskCase.Application.Common.GenericObjects;
+using EgeBilgiTaskCase.Application.Constants;
+using EgeBilgiTaskCase.Application.Features.Commands.Character.AddNewCharacter;
 using EgeBilgiTaskCase.Application.Features.Queries.Character.GetAllPagedCharacter;
 using EgeBilgiTaskCase.Client.HelperServices;
-using EgeBilgiTaskCase.Client.Models.Character;
 using EgeBilgiTaskCase.Client.Models;
+using EgeBilgiTaskCase.Client.Models.Character;
 using EgeBilgiTaskCase.Client.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using EgeBilgiTaskCase.Application.Common.DTOs._0RequestResponse;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace EgeBilgiTaskCase.Client.Controllers
 {
@@ -97,7 +101,7 @@ namespace EgeBilgiTaskCase.Client.Controllers
                 MyPagination = response.Data.Pagination,
                 SearchText = model.SearchText,
                 LocationId = model.LocationId,
-               // SpeciesId = model.SpeciesId,
+                // SpeciesId = model.SpeciesId,
                 StatusId = model.StatusId,
                 Take = model.Take,
                 PageIndex = model.PageIndex,
@@ -107,6 +111,123 @@ namespace EgeBilgiTaskCase.Client.Controllers
 
             return View(MYRESULT);
 
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> AddNew()
+        {
+            //if (User.Identity != null && User.Identity.IsAuthenticated)
+            //{
+            //    return RedirectToAction("Index", "Home");
+            //}
+
+            var model = new Character_AddNew_ViewModel();
+
+            var speciesString = QueryStringHelperService.ToQueryString(new { DbParameterTypeId = 1, ParentId = 4 });
+            var species_DDL_Response = await _httpClientService.GetDataListAsync(new RequestParameters
+            {
+                Action = "GetDataListDbParameter",
+                Controller = "DbParameter",
+                Folder = "Management",
+                QueryString = speciesString
+            });
+            List<DataList1> species_DDL = species_DDL_Response;
+
+            var typeString = QueryStringHelperService.ToQueryString(new { DbParameterTypeId = 2, ParentId = 4 });
+            var type_DDL_Response = await _httpClientService.GetDataListAsync(new RequestParameters
+            {
+                Action = "GetDataListDbParameter",
+                Controller = "DbParameter",
+                Folder = "Management",
+                QueryString = typeString
+            });
+            List<DataList1> type_DDL = type_DDL_Response;
+
+
+            model.Species_DDL = species_DDL;
+            model.Type_DDL = type_DDL;
+
+
+            return View(model);
+        }
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> AddNew(Character_AddNew_ViewModel model)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            MyResult MyResult = new();
+            MyResult.isOk = false;
+            MyResult.ResultText = Messages.GeneralError;
+            MyResult.ListURL = "/Character/Character/Index";
+            MyResult.ListText = "Karakter listesine dön";
+            MyResult.AddURL = "/Character/Character/AddNew";
+            MyResult.AddText = "Yeni Karakter Ekle";
+            MyResult.DetailsURL = "";
+            MyResult.DetailsText = "";
+            MyResult.isFancy = false;
+
+
+            var request = new AddNewCharacterCommandRequest
+            {
+                Name = model.Name,
+                Gender = model.Gender,
+                Image = "/images/r1.png",
+                CharacterDetail = model.CharacterDetail != null ? new CharacterDetail_AddNew_Dto
+                {
+                    OriginId = 0,
+                    LocationId = 0,
+                    EpisodeIds = model.CharacterDetail.EpisodeIds,
+                    StatusId = model.CharacterDetail.StatusId,
+                    TypeId = model.CharacterDetail.TypeId,
+                    SpeciesId = model.CharacterDetail.SpeciesId,
+                    Desc = ""
+                } : null
+            };
+
+            var requestParameters = new RequestParameters
+            {
+                Action = "AddNewCharacter",
+                Controller = "Character",
+                Folder = "Character"
+            };
+            var result = await _httpClientService.PostAsync2<OptResult<AddNewCharacterCommandResponse>>(requestParameters, request);
+            if (!result.Succeeded)
+            {
+                MyResult.ResultText = string.Join(",", result.Messages);
+
+                model.MyResult = MyResult;
+            }
+
+            if (result.Data == null)
+            {
+                MyResult.ResultText = Messages.DataNotFound;
+                MyResult.ListURL = "/Character/Index";
+                MyResult.ListText = "Karakter listesine dön";
+                MyResult.AddURL = "/Character/AddNew";
+                MyResult.AddText = "Yeni Karakter Ekle";
+                MyResult.DetailsURL = "";
+                MyResult.DetailsText = "";
+                MyResult.isFancy = false;
+
+                model.MyResult = MyResult;
+
+                return View(model);
+            }
+
+            string ResultText = Messages.SuccessfullyAdded;
+            MyResult.isOk = true;
+            MyResult.ResultText = ResultText;
+            MyResult.DetailsURL = "/Character/Update?Guid=" + result.Data.Guid;
+            MyResult.DetailsText = "Karakter Detayına Git";
+
+            model.MyResult = MyResult;
+
+            return View(model);
         }
     }
 

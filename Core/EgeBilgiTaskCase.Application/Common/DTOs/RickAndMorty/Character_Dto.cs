@@ -1,5 +1,27 @@
 ﻿namespace EgeBilgiTaskCase.Application.Common.DTOs.RickAndMorty
 {
+    public class Character_AddNew_Dto
+    {
+        public Guid Guid { get; set; }
+        public string Name { get; set; }
+        public string Gender { get; set; }
+        public string Image { get; set; }
+        public List<int>? EpisodeIds { get; set; }
+
+        public CharacterDetail_AddNew_Dto? CharacterDetail { get; set; }
+
+    }
+    public class CharacterDetail_AddNew_Dto
+    {
+        public int? OriginId { get; set; }
+        public int? LocationId { get; set; }
+        public List<int>? EpisodeIds { get; set; }
+        public int? StatusId { get; set; }
+        public int? TypeId { get; set; }
+        public int? SpeciesId { get; set; }
+        public string? Desc { get; set; }
+    }
+
     public class Character_Index_Dto
     {
         public int PageIndex { get; set; } = 1;
@@ -7,12 +29,12 @@
         public List<Character_GridView_Dto> GridView { get; set; } = new List<Character_GridView_Dto>(); 
         public int Take { get; set; } = 25;
         public string? OrderBy { get; set; } = "Id ASC";
-        public int CharacterId { get; set; }
-        public int LocationId { get; set; }
+        public int? CharacterId { get; set; }
+        public int? LocationId { get; set; }
         public int? EpisodeId { get; set; }
-        public int OriginId { get; set; }
-        public int SpeciesId { get; set; }
-        public int StatusId { get; set; }
+        public int? OriginId { get; set; }
+        public int? SpeciesId { get; set; }
+        public int? StatusId { get; set; }
 
         //public Guid CreatedUser { get; set; }
         //public string CreatedUserName { get; set; }

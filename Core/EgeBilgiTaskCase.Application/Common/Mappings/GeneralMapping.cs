@@ -1,6 +1,7 @@
 ﻿using EgeBilgiTaskCase.Application.Common.DTOs._0RequestResponse;
 using EgeBilgiTaskCase.Application.Common.DTOs.RickAndMorty;
 using EgeBilgiTaskCase.Application.Common.DTOs.User;
+using EgeBilgiTaskCase.Application.Features.Commands.Character.AddNewCharacter;
 using EgeBilgiTaskCase.Application.Features.Commands.User.CreateUser;
 using EgeBilgiTaskCase.Application.Features.Queries.Character.GetAllPagedCharacter;
 using EgeBilgiTaskCase.Application.Features.Queries.DbParameter.GetDataListDbParameter;
@@ -21,17 +22,12 @@ namespace EgeBilgiTaskCase.Application.Common.Mappings
             CreateMap<Character, GetAllPagedCharacterQueryRequest > ();
             CreateMap<Character, GetAllPagedCharacterQueryResponse>();
             CreateMap<Character_GridView_Dto, GetAllPagedCharacterQueryResponse>();
-            //<PaginatedList<Character>, PaginatedList<GetAllPagedCharacterQueryResponse>>();
 
-
-
-            //CreateMap<CreateUser_Dto, CreateUserCommandResponse>()
-            //    .ForMember(dest => dest.Guid, opt => opt.MapFrom(src => src.Guid))
-            //    .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
-            //    .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email));
-            ////  .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName));
-
-            //CreateMap<AppUser, CreateUser_Dto>().ReverseMap();
+            CreateMap<AddNewCharacterCommandRequest, Character_AddNew_Dto>();
+            CreateMap<Character, Character_AddNew_Dto>().ReverseMap();
+            CreateMap<Character, AddNewCharacterCommandResponse>();
+            CreateMap<CharacterDetail_AddNew_Dto, CharacterDetail>();
+           
 
             CreateMap<CreateUserCommandRequest, CreateUser_Dto>()
             .ForMember(dest => dest.Guid, opt => opt.Ignore())

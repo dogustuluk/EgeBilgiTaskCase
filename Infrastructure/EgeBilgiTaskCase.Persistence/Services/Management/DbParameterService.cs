@@ -108,8 +108,9 @@ namespace HospitalManagement.Persistence.Services.Management
             return await ExceptionHandler.HandleAsync(async () =>
             {
                 var data = await _readRepository.GetValueAsync("DbParameters", column, sqlQuery, 2);
-                if (data != null) return data;
-                return Messages.NullData;
+                return data;
+                //if (data != null) return data;
+                //return Messages.NullData;
             });
         }
 

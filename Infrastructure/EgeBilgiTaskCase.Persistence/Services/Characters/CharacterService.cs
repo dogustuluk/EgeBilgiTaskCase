@@ -149,20 +149,29 @@ namespace EgeBilgiTaskCase.Persistence.Services.Characters
 
             foreach (var character in pagedDatas.Data)
             {
-                string? statusName = await _dbParameterService.GetValue("", "DBParameterName1", $"Id = {character.CharacterDetails.StatusId}", 2);
+                string? statusName = "Not Specified";
+                string? speciesName = "Not Specified";
+                string? typeName = "Not Specified";
+                string? lastKnownLocation = "Not Specified";
+                string? firstSeen = "Not Specified";
+
+                if (character.CharacterDetails != null)
+                {
+                    statusName = await _dbParameterService.GetValue("", "DBParameterName1", $"Id = {character.CharacterDetails.StatusId}", 2) ?? "Not Specified";
+
+                    speciesName = await _dbParameterService.GetValue("", "DBParameterName1", $"Id = {character.CharacterDetails.SpeciesId}", 2) ?? "Not Specified";
+
+                     typeName = await _dbParameterService.GetValue("", "DBParameterName1", $"Id = {character.CharacterDetails.TypeId}", 2) ?? "Not Specified";
+
+                     lastKnownLocation = await _locationService.GetValue("", "Name", $"LocationApiId = {character.CharacterDetails.LocationId}", 2) ?? "Not Specified";
 
 
-                string? speciesName = await _dbParameterService.GetValue("","DBParameterName1",$"Id = {character.CharacterDetails.SpeciesId}", 2);
+                    var episodesIds = character.CharacterDetails.EpisodeIds;
+                    var firstEpisodeId = episodesIds.FirstOrDefault();
 
-                string? typeName = await _dbParameterService.GetValue("","DBParameterName1",$"Id = {character.CharacterDetails.TypeId}", 2);
-
-                string? lastKnownLocation = await _locationService.GetValue("","Name",$"LocationApiId = {character.CharacterDetails.LocationId}", 2);
-
-
-                var episodesIds = character.CharacterDetails.EpisodeIds;
-                var firstEpisodeId = episodesIds.FirstOrDefault();
-
-                string? firstSeen = await _episodeService.GetValue("","Name",$"EpisodeApiId = {firstEpisodeId}", 2);
+                    firstSeen = await _episodeService.GetValue("", "Name", $"EpisodeApiId = {firstEpisodeId}", 2) ?? "Not Specified";
+                }
+                
 
                 var dto = new Character_GridView_Dto
                 {
@@ -195,6 +204,31 @@ namespace EgeBilgiTaskCase.Persistence.Services.Characters
             };
 
             return await OptResult<PaginatedList<Character_GridView_Dto>>.SuccessAsync(paginatedResult, Messages.Successfull);
+        }
+
+        public async Task<OptResult<Character>> AddNewAsync(Character_AddNew_Dto model)
+        {
+            return await ExceptionHandler.HandleOptResultAsync(async () =>
+            {
+                var mappedModel = _mapper.Map<Character>(model);
+                bool isExist = await _characterReadRepositoryService.ExistsAsync(a => a.Name == model.Name);
+                if (isExist)
+                    return await OptResult<Character>.FailureAsync(Messages.AddedDataIsAlready);
+                mappedModel.Guid = Guid.NewGuid();
+                
+                var data = await _characterWriteRepositoryService.AddAsyncReturnEntity(mappedModel);
+                await _characterWriteRepositoryService.SaveChanges();
+
+                if (model.CharacterDetail != null)
+                {
+                    var mappedCharacterModel = _mapper.Map<CharacterDetail>(model.CharacterDetail);
+                    mappedCharacterModel.Guid = Guid.NewGuid();
+                    mappedCharacterModel.CharacterId = data.Id;
+                    var characterDetailData = await _characterDetailWriteRepository.AddAsyncReturnEntity(mappedCharacterModel);
+                    await _characterDetailWriteRepository.SaveChanges();
+                }
+                return await OptResult<Character>.SuccessAsync(data);
+            });
         }
     }
 }
