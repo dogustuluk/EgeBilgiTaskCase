@@ -29,7 +29,19 @@ namespace EgeBilgiTaskCase.Persistence.Services.Common
                 return Messages.NullData;
             });
         }
-
+        public async Task<List<DataList1>> GetDataListAsync()
+        {
+            return await ExceptionHandler.HandleAsync(async () =>
+            {
+                List<DataList1> returnDataList = new();
+                var datas = await _readRepository.GetDataAsync(a => a.Id > 0, "", 10000, "Id ASC");
+                foreach (var data in datas)
+                {
+                    returnDataList.Add(new DataList1() { Guid = "", Id = data.Id.ToString(), Name = data.Name.ToString() });
+                }
+                return returnDataList;
+            });
+        }
 
         //
         public async Task SaveAllEpisodeToDatabase()

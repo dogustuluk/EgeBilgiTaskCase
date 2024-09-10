@@ -5,6 +5,7 @@ using EgeBilgiTaskCase.Application.Features.Commands.Character.AddNewCharacter;
 using EgeBilgiTaskCase.Application.Features.Commands.User.CreateUser;
 using EgeBilgiTaskCase.Application.Features.Queries.Character.GetAllPagedCharacter;
 using EgeBilgiTaskCase.Application.Features.Queries.DbParameter.GetDataListDbParameter;
+using EgeBilgiTaskCase.Application.Features.Queries.Episodes.GetDataListEpisodes;
 using EgeBilgiTaskCase.Application.Utilities.Converters;
 using EgeBilgiTaskCase.Domain.Entities.Character;
 using EgeBilgiTaskCase.Domain.Entities.Identity;
@@ -44,6 +45,7 @@ namespace EgeBilgiTaskCase.Application.Common.Mappings
 
 
             CreateMap<DataList1, GetDataListDbParameterQueryResponse>();
+            CreateMap<DataList1, GetDataListEpisodesQueryResponse>();
 
             CreateMap<DataList1, GetDataListXQueryResponse>();
         }

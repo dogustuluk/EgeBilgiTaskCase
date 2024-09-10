@@ -58,20 +58,6 @@ namespace EgeBilgiTaskCase.Client.Controllers
                 });
             }
 
-
-            // var speciesString = QueryStringHelperService.ToQueryString(model.SpeciesId);
-            //  var speciesString = "ParentId=4&DbParameterType=1";
-
-
-            //var species_DDL_Response = await _httpClientService.GetDataListAsync(
-            //new RequestParameters
-            //{
-            //    Action = "GetDataListDbParameter",
-            //    Controller = "DbParameter",
-            //    Folder = "Management",
-            //    QueryString = speciesString
-            //});
-
             var speciesString = QueryStringHelperService.ToQueryString(new
             {
                 DbParameterTypeId = 1,
@@ -144,9 +130,17 @@ namespace EgeBilgiTaskCase.Client.Controllers
             });
             List<DataList1> type_DDL = type_DDL_Response;
 
+            var episodes_DDL_Response = await _httpClientService.GetDataListAsync(new RequestParameters
+            {
+                Action = "GetDataListEpisode",
+                Controller = "Episode",
+                Folder = "Common",
+            });
+            List<DataList1> episode_DDL = episodes_DDL_Response;
 
             model.Species_DDL = species_DDL;
             model.Type_DDL = type_DDL;
+            model.Episodes_DDL = episode_DDL;
 
 
             return View(model);
@@ -176,7 +170,7 @@ namespace EgeBilgiTaskCase.Client.Controllers
             {
                 Name = model.Name,
                 Gender = model.Gender,
-                Image = "/images/r1.png",
+                Image = model.Image ?? "/images/characters/RickAndMortyBoth.png",
                 CharacterDetail = model.CharacterDetail != null ? new CharacterDetail_AddNew_Dto
                 {
                     OriginId = 0,
@@ -189,12 +183,7 @@ namespace EgeBilgiTaskCase.Client.Controllers
                 } : null
             };
 
-            var requestParameters = new RequestParameters
-            {
-                Action = "AddNewCharacter",
-                Controller = "Character",
-                Folder = "Character"
-            };
+            var requestParameters = new RequestParameters {Action = "AddNewCharacter",Controller = "Character",Folder = "Character"};
             var result = await _httpClientService.PostAsync2<OptResult<AddNewCharacterCommandResponse>>(requestParameters, request);
             if (!result.Succeeded)
             {

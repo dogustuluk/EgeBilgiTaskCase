@@ -9,17 +9,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{22EE91B2-B075-4887-9D2B-99D49ACFF92B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EgeBilgiTaskCase.Domain", "Core\EgeBilgiTaskCase.Domain\EgeBilgiTaskCase.Domain.csproj", "{72511537-1B42-498D-A49B-41382F929862}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EgeBilgiTaskCase.Domain", "Core\EgeBilgiTaskCase.Domain\EgeBilgiTaskCase.Domain.csproj", "{72511537-1B42-498D-A49B-41382F929862}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EgeBilgiTaskCase.Application", "Core\EgeBilgiTaskCase.Application\EgeBilgiTaskCase.Application.csproj", "{3190E31F-3945-4DCF-8273-E285B3906C33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EgeBilgiTaskCase.Application", "Core\EgeBilgiTaskCase.Application\EgeBilgiTaskCase.Application.csproj", "{3190E31F-3945-4DCF-8273-E285B3906C33}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EgeBilgiTaskCase.Infrastructure", "Infrastructure\EgeBilgiTaskCase.Infrastructure\EgeBilgiTaskCase.Infrastructure.csproj", "{64AD546D-5F60-48FD-B70C-A28A259CAEE0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EgeBilgiTaskCase.Infrastructure", "Infrastructure\EgeBilgiTaskCase.Infrastructure\EgeBilgiTaskCase.Infrastructure.csproj", "{64AD546D-5F60-48FD-B70C-A28A259CAEE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EgeBilgiTaskCase.Persistence", "Infrastructure\EgeBilgiTaskCase.Persistence\EgeBilgiTaskCase.Persistence.csproj", "{D8952C0B-5A5B-47B1-B89E-DC11BFD2F455}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EgeBilgiTaskCase.Persistence", "Infrastructure\EgeBilgiTaskCase.Persistence\EgeBilgiTaskCase.Persistence.csproj", "{D8952C0B-5A5B-47B1-B89E-DC11BFD2F455}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EgeBilgiTaskCase.API", "Presentation\EgeBilgiTaskCase.API\EgeBilgiTaskCase.API.csproj", "{46093174-8C63-4DCC-BC1C-59DD8284A200}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EgeBilgiTaskCase.API", "Presentation\EgeBilgiTaskCase.API\EgeBilgiTaskCase.API.csproj", "{46093174-8C63-4DCC-BC1C-59DD8284A200}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EgeBilgiTaskCase.Client", "Presentation\EgeBilgiTaskCase.Client\EgeBilgiTaskCase.Client.csproj", "{408BCECA-5951-475C-B18F-F86D01A4E659}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EgeBilgiTaskCase.Client", "Presentation\EgeBilgiTaskCase.Client\EgeBilgiTaskCase.Client.csproj", "{408BCECA-5951-475C-B18F-F86D01A4E659}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

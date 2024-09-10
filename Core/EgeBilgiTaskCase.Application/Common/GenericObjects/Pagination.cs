@@ -12,7 +12,7 @@
         public int PageIndex { get; set; }
         public int TotalPages { get; set; } = 0;
         public int TotalRecords { get; set; } = 0;
-        public int PageSize = 25;
+        public int PageSize = 6;
         public bool HasPreviousPage { get; set; }
         public bool HasNextPage { get; set; }
     }
