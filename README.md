@@ -1,1 +1,0 @@
-Tamam bu haliyle YHocam çok teşekkür ederim. Tamamdır kolay gelsin
