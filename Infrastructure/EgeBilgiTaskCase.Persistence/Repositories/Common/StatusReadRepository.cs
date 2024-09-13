@@ -6,7 +6,7 @@ namespace EgeBilgiTaskCase.Persistence.Repositories.Common
 {
     public class StatusReadRepository : ReadRepository<Status>, IStatusReadRepository
     {
-        public StatusReadRepository(EgeBilgiTaskCaseDbContext context) : base(context)
+        public StatusReadRepository(ApplicationDbContext context) : base(context)
         {
         }
     }

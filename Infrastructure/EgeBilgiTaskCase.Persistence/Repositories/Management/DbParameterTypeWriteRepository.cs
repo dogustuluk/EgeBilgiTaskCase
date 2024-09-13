@@ -6,7 +6,7 @@ namespace EgeBilgiTaskCase.Persistence.Repositories.Common
 {
     public class DbParameterTypeWriteRepository : WriteRepository<DbParameterType>, IDbParameterTypeWriteRepository
     {
-        public DbParameterTypeWriteRepository(EgeBilgiTaskCaseDbContext context) : base(context)
+        public DbParameterTypeWriteRepository(ApplicationDbContext context) : base(context)
         {
         }
     }

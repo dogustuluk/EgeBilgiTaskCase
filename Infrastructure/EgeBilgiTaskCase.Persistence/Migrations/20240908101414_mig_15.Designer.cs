@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EgeBilgiTaskCase.Persistence.Migrations
 {
-    [DbContext(typeof(EgeBilgiTaskCaseDbContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("20240908101414_mig_15")]
     partial class mig_15
     {

@@ -5,7 +5,7 @@ namespace EgeBilgiTaskCase.Persistence.Repositories.Common
 {
     public class LocationReadRepository : ReadRepository<Location>, ILocationReadRepository
     {
-        public LocationReadRepository(EgeBilgiTaskCaseDbContext context) : base(context)
+        public LocationReadRepository(ApplicationDbContext context) : base(context)
         {
         }
     }

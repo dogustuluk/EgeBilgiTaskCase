@@ -6,7 +6,7 @@ namespace EgeBilgiTaskCase.Persistence.Repositories.Character
 {
     public class CharacterReadRepository : ReadRepository<a.Character>, ICharacterReadRepository
     {
-        public CharacterReadRepository(EgeBilgiTaskCaseDbContext context) : base(context)
+        public CharacterReadRepository(ApplicationDbContext context) : base(context)
         {
         }
     }

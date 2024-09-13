@@ -6,7 +6,7 @@ namespace EgeBilgiTaskCase.Persistence.Repositories.Management
 {
     public class ItemChangeReadRepository : ReadRepository<ItemChange>, IItemChangeReadRepository
     {
-        public ItemChangeReadRepository(EgeBilgiTaskCaseDbContext context) : base(context)
+        public ItemChangeReadRepository(ApplicationDbContext context) : base(context)
         {
         }
     }

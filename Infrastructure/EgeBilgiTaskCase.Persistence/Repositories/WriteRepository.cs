@@ -8,9 +8,9 @@ namespace EgeBilgiTaskCase.Persistence.Repositories
 {
     public class WriteRepository<T> : IWriteRepository<T> where T : BaseEntity
     {
-        private readonly EgeBilgiTaskCaseDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public WriteRepository(EgeBilgiTaskCaseDbContext context)
+        public WriteRepository(ApplicationDbContext context)
         {
             _context = context;
         }

@@ -5,7 +5,7 @@ namespace EgeBilgiTaskCase.Persistence.Repositories.Common
 {
     public class LocationWriteRepository : WriteRepository<Location>, ILocationWriteRepository
     {
-        public LocationWriteRepository(EgeBilgiTaskCaseDbContext context) : base(context)
+        public LocationWriteRepository(ApplicationDbContext context) : base(context)
         {
         }
     }

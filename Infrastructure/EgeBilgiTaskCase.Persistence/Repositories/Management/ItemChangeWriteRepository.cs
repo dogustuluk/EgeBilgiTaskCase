@@ -6,7 +6,7 @@ namespace EgeBilgiTaskCase.Persistence.Repositories.Management
 {
     public class ItemChangeWriteRepository : WriteRepository<ItemChange>, IItemChangeWriteRepository
     {
-        public ItemChangeWriteRepository(EgeBilgiTaskCaseDbContext context) : base(context)
+        public ItemChangeWriteRepository(ApplicationDbContext context) : base(context)
         {
         }
     }

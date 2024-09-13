@@ -6,7 +6,7 @@ namespace EgeBilgiTaskCase.Persistence.Repositories.Common
 {
     public class DbParameterTypeReadRepository : ReadRepository<DbParameterType>, IDbParameterTypeReadRepository
     {
-        public DbParameterTypeReadRepository(EgeBilgiTaskCaseDbContext context) : base(context)
+        public DbParameterTypeReadRepository(ApplicationDbContext context) : base(context)
         {
         }
     }

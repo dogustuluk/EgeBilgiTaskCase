@@ -4,7 +4,7 @@ namespace EgeBilgiTaskCase.Persistence.Repositories.Common
 {
     public class ErrorReadRepository : ReadRepository<Error>, IErrorReadRepository
     {
-        public ErrorReadRepository(EgeBilgiTaskCaseDbContext context) : base(context)
+        public ErrorReadRepository(ApplicationDbContext context) : base(context)
         {
         }
     }

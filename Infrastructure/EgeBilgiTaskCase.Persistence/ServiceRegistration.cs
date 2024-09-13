@@ -1,5 +1,4 @@
-﻿using EgeBilgiTaskCase.Application.Abstractions.Services.Character;
-using EgeBilgiTaskCase.Domain.Entities.Identity;
+﻿using EgeBilgiTaskCase.Domain.Entities.Identity;
 using EgeBilgiTaskCase.Persistence;
 using EgeBilgiTaskCase.Persistence.Context;
 using EgeBilgiTaskCase.Persistence.Repositories.Common;
@@ -13,7 +12,10 @@ namespace HospitalManagement.Persistence
     {
         public static void AddPersistenceServices(this IServiceCollection services)
         {
-            services.AddDbContext<EgeBilgiTaskCaseDbContext>(options => options.UseSqlServer(Configuration.ConnectionString));
+            services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseSqlServer(Configuration.ConnectionString);
+            });
 
             services.AddIdentity<AppUser, AppRole>(options =>
             {
@@ -26,16 +28,16 @@ namespace HospitalManagement.Persistence
 
                 //options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
                 //options.User.RequireUniqueEmail = true;
-                
+
 
             })
                 .AddDefaultTokenProviders()
-                .AddEntityFrameworkStores<EgeBilgiTaskCaseDbContext>();//identity
-            
+                .AddEntityFrameworkStores<ApplicationDbContext>();//identity
+
 
             services.RegisterRepositories(typeof(IErrorReadRepository).Assembly, typeof(ErrorReadRepository).Assembly);
             services.AddServicesInDbContextFromAttributes(Assembly.GetExecutingAssembly());
-            
+
 
         }
 
@@ -43,9 +45,9 @@ namespace HospitalManagement.Persistence
         {
             using (var scope = serviceProvider.CreateScope())
             {
-                var dbContext = scope.ServiceProvider.GetRequiredService<EgeBilgiTaskCaseDbContext>();
-              //  SeedDataHelper.SeedDepartments(dbContext);
-              //  SeedDataHelper.SeedCities(dbContext);
+                var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                //  SeedDataHelper.SeedDepartments(dbContext);
+                //  SeedDataHelper.SeedCities(dbContext);
             }
         }
 

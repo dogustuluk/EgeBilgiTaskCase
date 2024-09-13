@@ -1,0 +1,39 @@
+version: '3.8'
+services:
+  api:
+    image: myapp-api:latest
+    build:
+      context: .
+      dockerfile: ./Presentation/EgeBilgiTaskCase.API/Dockerfile
+    container_name: myapp-api
+    networks:
+      - mytest    
+    ports:
+      - "5000:80" # API uygulamanızın dışarıya açık portu Hocam 5000:80 yapmıştık daha önceden
+
+  client:
+    image: myapp-client:latest
+    build:
+      context: .
+      dockerfile: ./Presentation/EgeBilgiTaskCase.Client/Dockerfile
+    container_name: myapp-client
+    networks:
+      - mytest
+    ports:
+      - "3000:80" # Client uygulamanızın dışarıya açık portu
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: my-sqlserver
+    networks:
+      - mytest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=ege123Bilgi123@d
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433" # SQL Server için dış port
+  
+networks:
+  mytest:
+    external: true

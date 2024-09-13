@@ -6,7 +6,7 @@ namespace EgeBilgiTaskCase.Persistence.Repositories.Management
 {
     public class ServiceLogReadRepository : ReadRepository<ServiceLog>, IServiceLogReadRepository
     {
-        public ServiceLogReadRepository(EgeBilgiTaskCaseDbContext context) : base(context)
+        public ServiceLogReadRepository(ApplicationDbContext context) : base(context)
         {
         }
     }

@@ -8,9 +8,9 @@ namespace EgeBilgiTaskCase.Persistence.Repositories
 {
     public class AppUserWriteRepository : IAppUserWriteRepository
     {
-        private readonly EgeBilgiTaskCaseDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public AppUserWriteRepository(EgeBilgiTaskCaseDbContext context)
+        public AppUserWriteRepository(ApplicationDbContext context)
         {
             _context = context;
         }

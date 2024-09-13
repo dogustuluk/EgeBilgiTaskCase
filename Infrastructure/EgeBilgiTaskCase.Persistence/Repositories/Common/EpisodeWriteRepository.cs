@@ -5,7 +5,7 @@ namespace EgeBilgiTaskCase.Persistence.Repositories.Common
 {
     public class EpisodeWriteRepository : WriteRepository<Episode>, IEpisodeWriteRepository
     {
-        public EpisodeWriteRepository(EgeBilgiTaskCaseDbContext context) : base(context)
+        public EpisodeWriteRepository(ApplicationDbContext context) : base(context)
         {
         }
     }

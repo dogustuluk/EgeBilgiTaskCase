@@ -12,9 +12,9 @@ namespace EgeBilgiTaskCase.Persistence.Repositories
 {
     public class ReadRepository<T> : IReadRepository<T> where T : BaseEntity
     {
-        private readonly EgeBilgiTaskCaseDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public ReadRepository(EgeBilgiTaskCaseDbContext context)
+        public ReadRepository(ApplicationDbContext context)
         {
             _context = context;
         }

@@ -6,7 +6,7 @@ namespace EgeBilgiTaskCase.Persistence.Repositories.Management
 {
     public class OperationLogWriteRepository : WriteRepository<OperationLog>, IOperationLogWriteRepository
     {
-        public OperationLogWriteRepository(EgeBilgiTaskCaseDbContext context) : base(context)
+        public OperationLogWriteRepository(ApplicationDbContext context) : base(context)
         {
         }
     }

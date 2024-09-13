@@ -1,19 +1,15 @@
-using EgeBilgiTaskCase.Application.Common.DTOs.RickAndMorty;
+using EgeBilgiTaskCase.Application.Abstractions.Services.Common;
 using EgeBilgiTaskCase.Infrastructure;
 using EgeBilgiTaskCase.Infrastructure.Services;
+using EgeBilgiTaskCase.Persistence.Context;
 using HospitalManagement.API.Extensions.StartupExtensions;
 using HospitalManagement.Application;
 using HospitalManagement.Persistence;
-using System.Text.Json.Serialization;
-using System.Text.Json;
-using EgeBilgiTaskCase.Application.Abstractions.Services.Common;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -30,26 +26,27 @@ builder.Services.AddScoped<IRickAndMortyApiService, RickAndMortyApiService>();
 
 
 var app = builder.Build();
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/egeBilgiTaskCase_V1/swagger.json", "EgeBilgiTaskCase V1");
+    c.RoutePrefix = string.Empty;
+});
 
 app.UseCors(x => x
           .AllowAnyOrigin()
           .AllowAnyMethod()
           .AllowAnyHeader());
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/egeBilgiTaskCase_V1/swagger.json", "EgeBilgiTaskCase V1");
-        c.RoutePrefix = string.Empty;
-    });
-    //app.UseSwaggerUI();
-}
-
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+
+using (var scoped = app.Services.CreateScope())
+{
+    var context = scoped.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    context.Database.Migrate();
+}
+
 app.Run();

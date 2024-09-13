@@ -6,7 +6,7 @@ namespace EgeBilgiTaskCase.Persistence.Repositories.Character
 {
     public class CharacterWriteRepository : WriteRepository<a.Character>, ICharacterWriteRepository
     {
-        public CharacterWriteRepository(EgeBilgiTaskCaseDbContext context) : base(context)
+        public CharacterWriteRepository(ApplicationDbContext context) : base(context)
         {
         }
     }

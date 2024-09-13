@@ -11,9 +11,9 @@ namespace EgeBilgiTaskCase.Persistence.Repositories
 {
     public class AppUserReadRepository : IAppUserReadRepository
     {
-        private readonly EgeBilgiTaskCaseDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public AppUserReadRepository(EgeBilgiTaskCaseDbContext context)
+        public AppUserReadRepository(ApplicationDbContext context)
         {
             _context = context;
         }

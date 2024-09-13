@@ -5,7 +5,7 @@ namespace EgeBilgiTaskCase.Persistence.Repositories.Common
 {
     public class EpisodeReadRepository : ReadRepository<Episode>, IEpisodeReadRepository
     {
-        public EpisodeReadRepository(EgeBilgiTaskCaseDbContext context) : base(context)
+        public EpisodeReadRepository(ApplicationDbContext context) : base(context)
         {
         }
     }

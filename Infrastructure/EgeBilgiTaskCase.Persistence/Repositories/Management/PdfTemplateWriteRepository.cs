@@ -6,7 +6,7 @@ namespace EgeBilgiTaskCase.Persistence.Repositories.Management
 {
     public class PdfTemplateWriteRepository : WriteRepository<PdfTemplate>, IPdfTemplateWriteRepository
     {
-        public PdfTemplateWriteRepository(EgeBilgiTaskCaseDbContext context) : base(context)
+        public PdfTemplateWriteRepository(ApplicationDbContext context) : base(context)
         {
         }
     }

@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EgeBilgiTaskCase.Persistence.Context
 {
-    public class EgeBilgiTaskCaseDbContext : IdentityDbContext<AppUser, AppRole, int>
+    public class ApplicationDbContext : IdentityDbContext<AppUser, AppRole, int>
     {
-        public EgeBilgiTaskCaseDbContext(DbContextOptions options) : base(options)
+        public ApplicationDbContext(DbContextOptions options) : base(options)
         {
         }
         #region Character
