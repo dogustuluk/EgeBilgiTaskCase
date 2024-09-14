@@ -9,12 +9,14 @@ namespace HospitalManagement.Persistence.Services.Management
         private readonly IDbParameterReadRepository _readRepository;
         private readonly IDbParameterWriteRepository _writeRepository;
         private readonly IMapper _mapper;
-        //  private readonly DbParameterSpecifications _dbParameterSpecifications;
-        public DbParameterService(IDbParameterReadRepository readRepository, IDbParameterWriteRepository writeRepository, IMapper mapper)
+        private readonly DbParameterSpecifications _dbParameterSpecifications;
+
+        public DbParameterService(IDbParameterReadRepository readRepository, IDbParameterWriteRepository writeRepository, IMapper mapper, DbParameterSpecifications dbParameterSpecifications)
         {
             _readRepository = readRepository;
             _writeRepository = writeRepository;
             _mapper = mapper;
+            _dbParameterSpecifications = dbParameterSpecifications;
         }
 
         public async Task<OptResult<DbParameter>> CreateDbParameterAsync(Create_DBParameter_Dto model)
@@ -62,12 +64,12 @@ namespace HospitalManagement.Persistence.Services.Management
         {
             return await ExceptionHandler.HandleOptResultAsync(async () =>
             {
-                //  var predicate = _dbParameterSpecifications.GetAllPagedPredicate(model);
+                var predicate = _dbParameterSpecifications.GetAllPagedPredicate(model);
                 if (string.IsNullOrEmpty(model.OrderBy)) model.OrderBy = "Id DESC";
 
                 PaginatedList<DbParameter> pagedDbParameters;
 
-                pagedDbParameters = await _readRepository.GetDataPagedAsync(a => a.Id > 0, "", model.PageIndex, model.Take, model.OrderBy);
+                pagedDbParameters = await _readRepository.GetDataPagedAsync(predicate, "", model.PageIndex, model.Take, model.OrderBy);
 
                 return await OptResult<PaginatedList<DbParameter>>.SuccessAsync(pagedDbParameters, Messages.Successfull);
             });

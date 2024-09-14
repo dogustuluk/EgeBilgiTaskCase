@@ -24,13 +24,8 @@
 	  <ProjectReference Include="..\EgeBilgiTaskCase.Domain\EgeBilgiTaskCase.Domain.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Features\Queries\DbParameterType\GetAllDbParameterType\" />
-	  <Folder Include="Features\Queries\DbParameterType\GetByIdorGuidDbParameterType\" />
-	  <Folder Include="Features\Queries\DbParameterType\GetPagedDbParameterType\" />
-	  <Folder Include="Features\Queries\DbParameterType\GetValueDbParameterType\" />
-	  <Folder Include="Features\Queries\DbParameter\GetAllDbParameter\" />
-	  <Folder Include="Features\Queries\DbParameter\GetPagedDbParameter\" />
-	  <Folder Include="Features\Queries\DbParameter\GetByIdorGuidDbParameter\" />
-	  <Folder Include="Features\Queries\DbParameter\GetValueDbParameter\" />
+	  <Folder Include="Features\Queries\Episodes\GetAllPagedEpisode\" />
+	  <Folder Include="Features\Queries\Episodes\GetValueEpisode\" />
+	  <Folder Include="Features\Queries\Episodes\GetByIdorGuidEpisode\" />
 	</ItemGroup>
 </Project>

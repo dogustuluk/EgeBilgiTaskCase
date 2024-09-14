@@ -1,5 +1,7 @@
 ﻿using EgeBilgiTaskCase.Application.Common.DTOs.RickAndMorty;
 using EgeBilgiTaskCase.Domain.Entities.Character;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace EgeBilgiTaskCase.Persistence.Services.Common
 {
@@ -78,8 +80,8 @@ namespace EgeBilgiTaskCase.Persistence.Services.Common
             {
                 EpisodeApiId = episodeDto.Id,
                 Name = episodeDto.Name,
-                AirDate= episodeDto.AirDate,
-                ApiCreatedDate= episodeDto.ApiCreatedDate,
+                AirDate = episodeDto.AirDate,
+                ApiCreatedDate = episodeDto.ApiCreatedDate,
                 EpisodeStamp = episodeDto.Episode,
                 CreatedDate = DateTime.UtcNow,
                 UpdatedDate = DateTime.UtcNow
@@ -102,6 +104,67 @@ namespace EgeBilgiTaskCase.Persistence.Services.Common
         public List<int> ExtractIdsFromUrls(List<string> urls)
         {
             return urls.Select(url => ExtractIdFromUrl(url)).ToList();
+        }
+
+        public async Task<OptResult<Episode>> GetByIdOrGuid(object criteria)
+        {
+            return await ExceptionHandler.HandleOptResultAsync(async () =>
+            {
+                if (criteria == null)
+                    return await OptResult<Episode>.FailureAsync(Messages.NullValue);
+
+                Episode myData = null;
+
+                if (criteria is Guid guid)
+                    myData = await _readRepository.GetByGuidAsync(guid);
+                else if (criteria is int id)
+                    myData = await _readRepository.GetByIdAsync(id);
+
+                if (myData == null)
+                    return await OptResult<Episode>.FailureAsync(Messages.NullData);
+
+                return await OptResult<Episode>.SuccessAsync(myData);
+            });
+        }
+
+        public async Task<List<Episode>> GetAllEpisodeAsync(Expression<Func<Episode, bool>>? predicate, string? include)
+        {
+            return await ExceptionHandler.HandleAsync(async () =>
+            {
+                var datas = await _readRepository.GetAllAsync(predicate, include);
+                return await datas.ToListAsync();
+            });
+        }
+
+        public async Task<OptResult<PaginatedList<Episode>>> GetAllPagedEpisodeAsync(GetAllPaged_Episode_Index_Dto model)
+        {
+            return await ExceptionHandler.HandleOptResultAsync(async () =>
+            {
+                //  var predicate = _dbParameterSpecifications.GetAllPagedPredicate(model);
+                if (string.IsNullOrEmpty(model.OrderBy)) model.OrderBy = "Id DESC";
+
+                PaginatedList<Episode> pagedDbParameters;
+
+                pagedDbParameters = await _readRepository.GetDataPagedAsync(a => a.Id > 0, "", model.PageIndex, model.Take, model.OrderBy);
+
+                return await OptResult<PaginatedList<Episode>>.SuccessAsync(pagedDbParameters, Messages.Successfull);
+            });
+        }
+
+        public async Task<bool> ExistsEpisodeAsync(Expression<Func<Episode, bool>> predicate)
+        {
+            return await ExceptionHandler.HandleAsync(async () =>
+            {
+                return await _readRepository.ExistsAsync(predicate);
+            });
+        }
+
+        public async Task<Episode> GetEntity(Expression<Func<Episode, bool>> method, bool tracking = true)
+        {
+            return await ExceptionHandler.HandleAsync(async () =>
+            {
+                return await _readRepository.GetSingleEntityAsync(method);
+            });
         }
     }
 }

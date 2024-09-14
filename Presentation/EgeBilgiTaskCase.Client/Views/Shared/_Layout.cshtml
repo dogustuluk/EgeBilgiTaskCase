@@ -185,10 +185,23 @@
                                             <a class="submenu-title" href="#">Kullanıcılar<span class="sub-arrow"><i class="fa fa-chevron-right"></i></span></a>
                                             <ul class="nav-sub-childmenu submenu-content">
                                                 <li><a href="#">Sistem Kullanıcıları</a></li>
-                                                <li><a href="Index">Karakterler</a></li>
-                                                <li><a href="#">Bölümler</a></li>
-                                                <li><a href="#">Lokasyonlar</a></li>
+                                                <li><a href="@Url.Action("Index", "Character")">Karakterler</a></li>
+                                                <li><a href="@Url.Action("Index", "Episode")">Bölümler</a></li>
+                                                <li><a href="@Url.Action("Index", "Location")">Lokasyonlar</a></li>
                                                 <li><a href="#">Diğer</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="sidebar-list">
+                                    <i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title" href="#"><i data-feather="anchor"></i><span>İçerik</span></a>
+                                    <ul class="sidebar-submenu">
+                                        <li>
+                                            <a class="submenu-title" href="#">Yönetim<span class="sub-arrow"><i class="fa fa-chevron-right"></i></span></a>
+                                            <ul class="nav-sub-childmenu submenu-content">
+                                                <li><a href="#">Sistem Kullanıcıları</a></li>
+                                                <li><a href="@Url.Action("Index", "DbParameter")">Veritabanı Değişkenleri</a></li>
+                                                <li><a href="@Url.Action("Index", "DbParameterType")">Veritabanı Değişkenleri Tipleri</a></li>
                                             </ul>
                                         </li>
                                     </ul>

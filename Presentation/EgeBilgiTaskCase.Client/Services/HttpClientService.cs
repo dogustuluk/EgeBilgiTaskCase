@@ -157,13 +157,7 @@ namespace EgeBilgiTaskCase.Client.Services
             await SendRequestAsync(request);
         }
 
-        private async Task<HttpResponseMessage> SendRequestAsync(HttpRequestMessage request)
-        {
-            var client = _httpClientFactory.CreateClient("MyApiClient");
-            var response = await client.SendAsync(request);
-            response.EnsureSuccessStatusCode();
-            return response;
-        }
+
 
         private async Task<T> DeserializeResponse<T>(HttpResponseMessage response)
         {
@@ -220,6 +214,44 @@ namespace EgeBilgiTaskCase.Client.Services
             //});
 
             return default;
+        }
+
+        //public async Task<OptResult<TResponse>> GetValueAsync<TRequest, TResponse>(TRequest request, string folder, string controller, string actionName)
+        //{
+        //    var queryString = GenerateQueryString(request);
+        //    var url = BuildUrl(folder, controller, actionName, queryString);
+        //    var httpRequest = CreateRequest(HttpMethod.Get, url);
+
+        //    var response = await SendRequestAsync(httpRequest);
+        //    var jsonResponse = await response.Content.ReadAsStringAsync();
+
+        //    var optResult = JsonSerializer.Deserialize<OptResult<TResponse>>(jsonResponse, new JsonSerializerOptions
+        //    {
+        //        PropertyNameCaseInsensitive = true
+        //    });
+
+        //    if (optResult == null)
+        //        throw new Exception("Deserialization failed or response was null.");
+        //    if (!optResult.Succeeded)
+        //        throw new Exception($"Request failed with message: {optResult.Message}");
+
+        //    return optResult;
+        //}
+        private async Task<HttpResponseMessage> SendRequestAsync(HttpRequestMessage request)
+        {
+            var client = _httpClientFactory.CreateClient("MyApiClient");
+            var response = await client.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+            return response;
+        }
+        private string GenerateQueryString<TRequest>(TRequest request)
+        {
+            // Use reflection or another method to generate query strings from the request object.
+            var properties = typeof(TRequest).GetProperties()
+                                .Where(p => p.GetValue(request) != null)
+                                .Select(p => $"{p.Name}={p.GetValue(request)}");
+
+            return string.Join("&", properties);
         }
     }
 }
