@@ -1,0 +1,174 @@
+﻿@using EgeBilgiTaskCase.Client.Models.User;
+@model User_Update_ViewModel
+<div class="page-body">
+    <div class="container-fluid">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h3>@Model.PageTitle</h3><br />
+                    <h4>@Model.SubPageTitle</h4>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#"><i data-feather="home"></i></a></li>
+                        <li class="breadcrumb-item">İçerik</li>
+                        <li class="breadcrumb-item">Kullanıcılar</li>
+                        <li class="breadcrumb-item">Sistem Kullanıcıları</li>
+                        <li class="breadcrumb-item active"> Edit Profile</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Container-fluid starts-->
+    <div class="container-fluid">
+        <div class="edit-profile">
+            <form>
+                <div class="row">
+                    <div class="col-xl-4 col-lg-5">
+                        <div class="card">
+                            <div class="card-header pb-0">
+                                <h4 class="card-title mb-0">Genel Bilgileri</h4>
+                                <div class="card-options"><a class="card-options-collapse" href="#" data-bs-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a><a class="card-options-remove" href="#" data-bs-toggle="card-remove"><i class="fe fe-x"></i></a></div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-2">
+                                    <div class="profile-title">
+                                        <div class="d-lg-flex d-block align-items-center">
+                                            <img class="img-70 rounded-circle" alt="" src="../assets/images/user/7.jpg">
+                                            <div class="flex-grow-1">
+                                                <h3 class="mb-1 f-20 txt-primary"> >@Model.NameSurname</h3>
+                                                <p class="f-12 mb-0">
+                                                    Kullanıcı Adı:<b>@Model.UserName</b>
+                                                    <br /> -> buraya rol yaz <-
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label f-w-500">Email:</label>
+                                    <label class="form-label f-w-500"><b>@Model.Email</b></label>
+                                    <input class="form-control" placeholder="@Model.Email" asp-for="Email">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label f-w-500">Cinsiyet</label>
+                                    <select class="form-select" asp-for="Gender">
+                                        @if (Model.Gender == "M")
+                                        {
+                                            <option value="M" selected>Erkek</option>
+                                            <option value="F">Kadın</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="M">Erkek</option>
+                                            <option value="F" selected>Kadın</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label f-w-500">Kullanıcı Durumu</label>
+                                    <select class="form-select" asp-for="StatusId">
+                                        @if (Model.StatusId == -1)
+                                        {
+                                            <option value=-1 selected>Silindi</option>
+                                            <option value=10>Aktif</option>
+                                        }
+                                        else
+                                        {
+                                            <option value=-1>Silindi</option>
+                                            <option value=10 selected>Aktif</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-8 col-lg-7">
+                        <div class="card">
+                            <div class="card-header pb-0">
+                                <h4 class="card-title mb-0">Edit Profile</h4>
+                                <div class="card-options"><a class="card-options-collapse" href="#" data-bs-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a><a class="card-options-remove" href="#" data-bs-toggle="card-remove"><i class="fe fe-x"></i></a></div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label class="form-label f-w-500">Company</label>
+                                            <input class="form-control" type="text" placeholder="Company">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="mb-3">
+                                            <label class="form-label f-w-500">Username</label>
+                                            <input class="form-control" type="text" placeholder="Username">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label f-w-500">Email address</label>
+                                            <input class="form-control" type="email" placeholder="Email">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label f-w-500">First Name</label>
+                                            <input class="form-control" type="text" placeholder="Company">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label f-w-500">Last Name</label>
+                                            <input class="form-control" type="text" placeholder="Last Name">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <label class="form-label f-w-500">Address</label>
+                                            <input class="form-control" type="text" placeholder="Home Address">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label f-w-500">City</label>
+                                            <input class="form-control" type="text" placeholder="City">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="mb-3">
+                                            <label class="form-label f-w-500">Postal Code</label>
+                                            <input class="form-control" type="number" placeholder="ZIP Code">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label class="form-label f-w-500">Country</label>
+                                            <select class="form-control btn-square">
+                                                <option value="0">India</option>
+                                                <option value="1">Germany</option>
+                                                <option value="2">Canada</option>
+                                                <option value="3">Usa</option>
+                                                <option value="4">Aus</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div>
+                                            <label class="form-label f-w-500">About Me</label>
+                                            <textarea class="form-control" rows="5" placeholder="Enter About your description"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-end">
+                                <button class="btn btn-primary" type="submit">Güncelle</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Container-fluid Ends-->
+</div>

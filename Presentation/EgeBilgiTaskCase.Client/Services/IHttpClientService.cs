@@ -19,7 +19,7 @@ namespace EgeBilgiTaskCase.Client.Services
         Task<OptResult<OptResultClient>> PostAsync(RequestParameters requestParameters, object body);
         Task<T> PutAsync<T>(RequestParameters requestParameters, object body);
         Task DeleteAsync<T>(RequestParameters requestParameters, string id);
-
+        Task<string> GetJsonAsync(RequestParameters requestParameters);
 
     }
 }

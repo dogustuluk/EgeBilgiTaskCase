@@ -1,6 +1,9 @@
 ﻿using EgeBilgiTaskCase.Application.Abstractions.Caching;
+using EgeBilgiTaskCase.Application.Abstractions.Storage;
 using EgeBilgiTaskCase.Application.Abstractions.Token;
+using EgeBilgiTaskCase.Application.Services;
 using EgeBilgiTaskCase.Infrastructure.Services;
+using EgeBilgiTaskCase.Infrastructure.Services.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
@@ -11,7 +14,10 @@ namespace EgeBilgiTaskCase.Infrastructure
     {
         public static void AddInfrastructureServices(this IServiceCollection serviceCollection, IConfiguration configuration)
         {
+            serviceCollection.AddScoped<IFileService, FileService>();
+            serviceCollection.AddScoped<IStorageService, StorageService>();
             serviceCollection.AddScoped<ITokenHandler, TokenHandler>();
+            serviceCollection.AddScoped<IRedisCacheService, RedisCacheService>();
 
             serviceCollection.AddTransient<IConnectionMultiplexer>(sp =>
             {
@@ -25,8 +31,10 @@ namespace EgeBilgiTaskCase.Infrastructure
                 };
                 return ConnectionMultiplexer.Connect(options);
             });
-            serviceCollection.AddScoped<IRedisCacheService, RedisCacheService>();
-
+        }
+        public static void AddStorage<T>(this IServiceCollection serviceCollection) where T : Storage, IStorage
+        {
+            serviceCollection.AddScoped<IStorage, T>();
         }
     }
 }

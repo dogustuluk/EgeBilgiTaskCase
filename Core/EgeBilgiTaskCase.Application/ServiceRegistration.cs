@@ -12,19 +12,19 @@ namespace HospitalManagement.Application
 
             serviceCollection.AddMediatR(typeof(ServiceRegistration));
             serviceCollection.AddHttpClient();
-            serviceCollection.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly()); 
+            serviceCollection.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
             serviceCollection.AddAutoMapper(Assembly.GetExecutingAssembly());
 
             //otomatize et -->
-            
+
             serviceCollection.AddScoped<CharacterSpecifications>();
             serviceCollection.AddScoped<DbParameterSpecifications>();
             serviceCollection.AddScoped<DbParameterTypeSpecifications>();
             serviceCollection.AddScoped<ErrorSpecifications>();
             serviceCollection.AddScoped<UserSpecifications>();
-            
-           serviceCollection.AddScoped<ICryptographyService,CryptographyService>();
+
+            serviceCollection.AddScoped<ICryptographyService, CryptographyService>();
 
         }
     }

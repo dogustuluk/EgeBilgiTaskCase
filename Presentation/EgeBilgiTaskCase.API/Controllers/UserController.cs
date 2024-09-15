@@ -1,7 +1,7 @@
 ﻿using EgeBilgiTaskCase.Application.Common.GenericObjects;
 using EgeBilgiTaskCase.Application.Features.Commands.User.CreateUser;
+using EgeBilgiTaskCase.Application.Features.Queries.User.GetByIdOrGuidUser;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EgeBilgiTaskCase.API.Controllers
@@ -24,5 +24,13 @@ namespace EgeBilgiTaskCase.API.Controllers
             OptResult<CreateUserCommandResponse> response = await _mediator.Send(createUserCommandRequest);
             return Ok(response);
         }
+        [HttpGet]
+        [Route("GetByIdOrGuidUser")]
+        public async Task<IActionResult> GetByIdOrGuidUser([FromQuery] GetByIdOrGuidUserQueryRequest request)
+        {
+            OptResult<GetByIdOrGuidUserQueryResponse> response = await _mediator.Send(request);
+            return Ok(response);
+        }
+
     }
 }

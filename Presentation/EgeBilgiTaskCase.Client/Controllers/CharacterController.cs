@@ -9,8 +9,6 @@ using EgeBilgiTaskCase.Client.Models.Character;
 using EgeBilgiTaskCase.Client.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using System.Text;
 
 namespace EgeBilgiTaskCase.Client.Controllers
 {
@@ -183,7 +181,7 @@ namespace EgeBilgiTaskCase.Client.Controllers
                 } : null
             };
 
-            var requestParameters = new RequestParameters {Action = "AddNewCharacter",Controller = "Character",Folder = "Character"};
+            var requestParameters = new RequestParameters { Action = "AddNewCharacter", Controller = "Character", Folder = "Character" };
             var result = await _httpClientService.PostAsync2<OptResult<AddNewCharacterCommandResponse>>(requestParameters, request);
             if (!result.Succeeded)
             {
@@ -217,6 +215,16 @@ namespace EgeBilgiTaskCase.Client.Controllers
             model.MyResult = MyResult;
 
             return View(model);
+        }
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> Update(Guid? Guid)
+        {
+            //role,permission kontrolü yap.
+            //jwt'den kullanıcın id al
+
+            // var myCharacter = 
+            return View();
         }
     }
 

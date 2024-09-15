@@ -1,4 +1,5 @@
-﻿using EgeBilgiTaskCase.Domain.Entities.Character;
+﻿using DelmarV2.Domain.Entities.Common;
+using EgeBilgiTaskCase.Domain.Entities.Character;
 using EgeBilgiTaskCase.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,7 @@ namespace EgeBilgiTaskCase.Persistence.Context
         public DbSet<DbParameterType> DbParameterTypes { get; set; }
         public DbSet<Error> Errors { get; set; }
         public DbSet<Status> Statuses { get; set; }
+        public DbSet<FFile> FFiles { get; set; }
         #endregion
 
         #region Management

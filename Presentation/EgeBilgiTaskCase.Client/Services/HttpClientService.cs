@@ -81,6 +81,17 @@ namespace EgeBilgiTaskCase.Client.Services
 
             return optResult;
         }
+        public async Task<string> GetJsonAsync(RequestParameters requestParameters)
+        {
+            var url = BuildUrl(requestParameters);
+            var request = CreateRequest(HttpMethod.Get, url, headers: requestParameters.Headers);
+            var response = await SendRequestAsync(request);
+
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+
+            return jsonResponse;
+        }
+
         public async Task<List<DataList1>> GetDataListAsync(RequestParameters requestParameters, string id = null)
         {
             var url = BuildUrl(requestParameters, id);
@@ -102,19 +113,6 @@ namespace EgeBilgiTaskCase.Client.Services
             return dataList;
         }
 
-        //public async Task<string> PostAsync(RequestParameters requestParameters, object body)
-        //{
-        //    var client = _httpClientFactory.CreateClient();
-        //    var url = BuildUrl(requestParameters);
-
-        //    var jsonContent = new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json");
-
-        //    var response = await client.PostAsync(url, jsonContent);
-        //    response.EnsureSuccessStatusCode();
-
-        //    var jsonResponse = await response.Content.ReadAsStringAsync();            
-        //    return await response.Content.ReadAsStringAsync();
-        //}
         public async Task<OptResult<OptResultClient>> PostAsync(RequestParameters requestParameters, object body)
         {
             var client = _httpClientFactory.CreateClient();
@@ -139,9 +137,6 @@ namespace EgeBilgiTaskCase.Client.Services
 
         }
 
-
-
-
         public async Task<T> PutAsync<T>(RequestParameters requestParameters, object body)
         {
             var url = BuildUrl(requestParameters);
@@ -156,8 +151,6 @@ namespace EgeBilgiTaskCase.Client.Services
             var request = CreateRequest(HttpMethod.Delete, url, headers: requestParameters.Headers);
             await SendRequestAsync(request);
         }
-
-
 
         private async Task<T> DeserializeResponse<T>(HttpResponseMessage response)
         {
@@ -216,27 +209,6 @@ namespace EgeBilgiTaskCase.Client.Services
             return default;
         }
 
-        //public async Task<OptResult<TResponse>> GetValueAsync<TRequest, TResponse>(TRequest request, string folder, string controller, string actionName)
-        //{
-        //    var queryString = GenerateQueryString(request);
-        //    var url = BuildUrl(folder, controller, actionName, queryString);
-        //    var httpRequest = CreateRequest(HttpMethod.Get, url);
-
-        //    var response = await SendRequestAsync(httpRequest);
-        //    var jsonResponse = await response.Content.ReadAsStringAsync();
-
-        //    var optResult = JsonSerializer.Deserialize<OptResult<TResponse>>(jsonResponse, new JsonSerializerOptions
-        //    {
-        //        PropertyNameCaseInsensitive = true
-        //    });
-
-        //    if (optResult == null)
-        //        throw new Exception("Deserialization failed or response was null.");
-        //    if (!optResult.Succeeded)
-        //        throw new Exception($"Request failed with message: {optResult.Message}");
-
-        //    return optResult;
-        //}
         private async Task<HttpResponseMessage> SendRequestAsync(HttpRequestMessage request)
         {
             var client = _httpClientFactory.CreateClient("MyApiClient");

@@ -1,6 +1,4 @@
-﻿using EgeBilgiTaskCase.Application.Common.GenericObjects;
-using EgeBilgiTaskCase.Application.Repositories;
-using EgeBilgiTaskCase.Domain.Entities.Common;
+﻿using EgeBilgiTaskCase.Application.Repositories;
 using EgeBilgiTaskCase.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
@@ -23,13 +21,13 @@ namespace EgeBilgiTaskCase.Persistence.Repositories
 
         public async Task<int> CountAsync(Expression<Func<T, bool>>? predicate)
         {
-            int count = await Table.CountAsync(predicate);
+            int count = await Table.AsNoTracking().CountAsync(predicate);
             return count;
         }
 
         public async Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate)
         {
-            bool exist = await Table.AnyAsync(predicate);
+            bool exist = await Table.AsNoTracking().AnyAsync(predicate);
             if (exist)
                 return exist;
             else
@@ -64,15 +62,13 @@ namespace EgeBilgiTaskCase.Persistence.Repositories
         public async Task<T> GetByIdAsync(int id)
         {
             var entity = await Table.FirstAsync(x => x.Id == id);
-            if (entity != null) return entity;
-            else throw new ArgumentNullException("id bulunamadı");
+            return entity;
         }
 
         public async Task<T> GetByGuidAsync(Guid guid)
         {
             var entity = await Table.FirstAsync(x => x.Guid == guid);
-            if (entity != null) return entity;
-            else throw new ArgumentNullException("guid bulunamadı");
+            return entity;
         }
 
         public async Task<T> GetByEntityAsync(object value, string? fieldName = null)
@@ -97,13 +93,7 @@ namespace EgeBilgiTaskCase.Persistence.Repositories
 
                 entity = await Table.FirstOrDefaultAsync(lambda);
             }
-
-            if (entity != null)
-                return entity;
-
-            else
-                throw new ArgumentNullException($"{fieldName ?? "Belirtilen değer"} bulunamadı");
-
+            return entity;
         }
 
         public async Task<IQueryable<T>> GetDataAsync(Expression<Func<T, bool>> predicate, string? include, int take, string orderBy)

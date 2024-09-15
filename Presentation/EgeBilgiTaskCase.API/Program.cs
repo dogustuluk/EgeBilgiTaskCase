@@ -1,6 +1,7 @@
 using EgeBilgiTaskCase.Application.Abstractions.Services.Common;
 using EgeBilgiTaskCase.Infrastructure;
 using EgeBilgiTaskCase.Infrastructure.Services;
+using EgeBilgiTaskCase.Infrastructure.Services.Storage.Local;
 using EgeBilgiTaskCase.Persistence.Context;
 using HospitalManagement.API.Extensions.StartupExtensions;
 using HospitalManagement.Application;
@@ -16,6 +17,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddStorage<LocalStorage>();
 builder.Services.AddPersistenceServices();
 builder.Services.HttpLoggingOptionsStartupExtension();
 builder.Services.JsonOptionsStartupExtension();

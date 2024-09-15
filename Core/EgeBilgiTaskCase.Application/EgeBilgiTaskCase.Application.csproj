@@ -24,6 +24,9 @@
 	  <ProjectReference Include="..\EgeBilgiTaskCase.Domain\EgeBilgiTaskCase.Domain.csproj" />
 	</ItemGroup>
 	<ItemGroup>
+	  <Folder Include="Features\Commands\Character\DeleteCharacter\" />
+	  <Folder Include="Features\Commands\Character\UpdateCharacter\" />
+	  <Folder Include="Features\Queries\Character\GetByIdOrGuidCharacter\" />
 	  <Folder Include="Features\Queries\Episodes\GetAllPagedEpisode\" />
 	  <Folder Include="Features\Queries\Episodes\GetValueEpisode\" />
 	  <Folder Include="Features\Queries\Episodes\GetByIdorGuidEpisode\" />
