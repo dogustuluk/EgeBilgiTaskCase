@@ -40,9 +40,10 @@ app.UseCors(x => x
           .AllowAnyMethod()
           .AllowAnyHeader());
 
-app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseHttpsRedirection();
+
 app.MapControllers();
 
 using (var scoped = app.Services.CreateScope())

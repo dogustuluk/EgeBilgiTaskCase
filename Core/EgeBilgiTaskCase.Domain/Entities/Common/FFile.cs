@@ -1,4 +1,4 @@
-﻿namespace DelmarV2.Domain.Entities.Common
+﻿namespace EgeBilgiTaskCase.Domain.Entities.Common
 {
     public class FFile : BaseEntity
     {

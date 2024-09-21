@@ -1,6 +1,5 @@
 ﻿namespace EgeBilgiTaskCase.Application.Common.DTOs.User
 {
-
     public class CreateUser_Dto
     {
         public Guid Guid { get; set; }

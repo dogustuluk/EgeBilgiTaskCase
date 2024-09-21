@@ -35,12 +35,13 @@
                                 <div class="row mb-2">
                                     <div class="profile-title">
                                         <div class="d-lg-flex d-block align-items-center">
-                                            <img class="img-70 rounded-circle" alt="" src="../assets/images/user/7.jpg">
+                                            <img class="img-90 rounded-circle" alt=""
+                                                 src="@(string.IsNullOrEmpty(Model.Image) ? Url.Content("~/images/default-user.png") : Model.Image)" />
                                             <div class="flex-grow-1">
-                                                <h3 class="mb-1 f-20 txt-primary"> >@Model.NameSurname</h3>
+                                                <h3 class="mb-1 f-20 txt-primary"> @Model.NameSurname</h3>
                                                 <p class="f-12 mb-0">
                                                     Kullanıcı Adı:<b>@Model.UserName</b>
-                                                    <br /> -> buraya rol yaz <-
+                                                    <br /> Doğum Tarihi: @Model.BirthDate.ToString("MM/dd/yyyy")
                                                 </p>
                                             </div>
                                         </div>
@@ -49,7 +50,6 @@
                                 <div class="mb-3">
                                     <label class="form-label f-w-500">Email:</label>
                                     <label class="form-label f-w-500"><b>@Model.Email</b></label>
-                                    <input class="form-control" placeholder="@Model.Email" asp-for="Email">
                                 </div>
 
                                 <div class="mb-3">
@@ -93,70 +93,64 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-5">
+                                    <div class="col-sm-6 col-md-5">
                                         <div class="mb-3">
-                                            <label class="form-label f-w-500">Company</label>
-                                            <input class="form-control" type="text" placeholder="Company">
+                                            <label class="form-label f-w-500">Kullanıcı Adı</label>
+                                            <input class="form-control" type="text" asp-for=NameSurname placeholder="@Model.NameSurname">
                                         </div>
                                     </div>
-                                    <div class="col-sm-6 col-md-3">
+                                    <div class="col-sm-6 col-md-5">
                                         <div class="mb-3">
-                                            <label class="form-label f-w-500">Username</label>
-                                            <input class="form-control" type="text" placeholder="Username">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6 col-md-4">
-                                        <div class="mb-3">
-                                            <label class="form-label f-w-500">Email address</label>
-                                            <input class="form-control" type="email" placeholder="Email">
+                                            <label class="form-label f-w-500">Email</label>
+                                            <input class="form-control" type="email" asp-for=Email placeholder="@Model.Email">
                                         </div>
                                     </div>
                                     <div class="col-sm-6 col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label f-w-500">First Name</label>
-                                            <input class="form-control" type="text" placeholder="Company">
+                                            <label class="form-label f-w-500">Telefon Numarası</label>
+                                            <input class="form-control" type="text" asp-for=GSM placeholder="@Model.GSM">
                                         </div>
                                     </div>
                                     <div class="col-sm-6 col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label f-w-500">Last Name</label>
-                                            <input class="form-control" type="text" placeholder="Last Name">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="mb-3">
-                                            <label class="form-label f-w-500">Address</label>
-                                            <input class="form-control" type="text" placeholder="Home Address">
+                                            <label class="form-label f-w-500">Kişisel Telefon Numarası</label>
+                                            <input class="form-control" type="text" asp-for=GSMPersonal placeholder="@Model.GSMPersonal">
                                         </div>
                                     </div>
                                     <div class="col-sm-6 col-md-4">
                                         <div class="mb-3">
-                                            <label class="form-label f-w-500">City</label>
-                                            <input class="form-control" type="text" placeholder="City">
+                                            <label class="form-label f-w-500">Email Onay</label>
+                                            <div>
+                                                <input type="radio" id="emailConfirmed" name="emailStatus" value="1"
+                                                       @(Model.EmailConfirmed == 1 ? "checked" : "") />
+                                                <label for="emailConfirmed">Onaylandı</label>
+                                            </div>
+                                            <div>
+                                                <input type="radio" id="emailNotConfirmed" name="emailStatus" value="0"
+                                                       @(Model.EmailConfirmed == 0 ? "checked" : "") />
+                                                <label for="emailNotConfirmed">Onaylanmadı</label>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6 col-md-3">
+                                    <div class="col-sm-6 col-md-4">
                                         <div class="mb-3">
-                                            <label class="form-label f-w-500">Postal Code</label>
-                                            <input class="form-control" type="number" placeholder="ZIP Code">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <div class="mb-3">
-                                            <label class="form-label f-w-500">Country</label>
-                                            <select class="form-control btn-square">
-                                                <option value="0">India</option>
-                                                <option value="1">Germany</option>
-                                                <option value="2">Canada</option>
-                                                <option value="3">Usa</option>
-                                                <option value="4">Aus</option>
-                                            </select>
+                                            <label class="form-label f-w-500">Telefon Numarası Onay</label>
+                                              <div>
+                                                <input type="radio" value="1"
+                                                       @(Model.PhoneNumberConfirmed == 1 ? "checked" : "") />
+                                                <label for="phoneNumberConfirmed">Onaylandı</label>
+                                            </div>
+                                            <div>
+                                                <input type="radio" value="0"
+                                                       @(Model.PhoneNumberConfirmed == 0 ? "checked" : "") />
+                                                <label for="phoneNumberConfirmed">Onaylanmadı</label>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div>
-                                            <label class="form-label f-w-500">About Me</label>
-                                            <textarea class="form-control" rows="5" placeholder="Enter About your description"></textarea>
+                                            <div class="btn btn-outline-primary ms-2"><i data-feather="upload">   </i>Fotoğraf Yükle  </div>
+
                                         </div>
                                     </div>
                                 </div>

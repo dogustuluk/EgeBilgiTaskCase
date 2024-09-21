@@ -259,6 +259,82 @@ namespace EgeBilgiTaskCase.Persistence.Migrations
                     b.ToTable("Errors");
                 });
 
+            modelBuilder.Entity("EgeBilgiTaskCase.Domain.Entities.Common.FFile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreatedUser")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("DeletedInfo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileDesc")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("FileSize")
+                        .HasColumnType("float");
+
+                    b.Property<int>("FileTypeID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FileURL")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("M_ItemID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("M_ItemType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ParamID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("T_ItemID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("T_ItemType")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UpdatedUser")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("isActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isCloud")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isHidden")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isReminder")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FFiles");
+                });
+
             modelBuilder.Entity("EgeBilgiTaskCase.Domain.Entities.Common.Status", b =>
                 {
                     b.Property<int>("Id")
@@ -291,14 +367,8 @@ namespace EgeBilgiTaskCase.Persistence.Migrations
                     b.Property<int>("SortNo")
                         .HasColumnType("int");
 
-                    b.Property<int>("StatusId")
-                        .HasColumnType("int");
-
                     b.Property<string>("StatusName")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("StatusType")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
@@ -382,6 +452,9 @@ namespace EgeBilgiTaskCase.Persistence.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("IdentityNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")

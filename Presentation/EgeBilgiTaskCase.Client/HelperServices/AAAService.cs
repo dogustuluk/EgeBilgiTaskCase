@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using System.Web;
 
-namespace EgeBilgiTaskCase.Client.Services
+namespace EgeBilgiTaskCase.Client.HelperServices
 {
     public class AAAService
     {
@@ -74,7 +74,7 @@ namespace EgeBilgiTaskCase.Client.Services
 
             double retNum;
 
-            isNum = Double.TryParse(Convert.ToString(Expression), System.Globalization.NumberStyles.Any, System.Globalization.NumberFormatInfo.InvariantInfo, out retNum);
+            isNum = double.TryParse(Convert.ToString(Expression), NumberStyles.Any, NumberFormatInfo.InvariantInfo, out retNum);
             return isNum;
         }
         public bool IsValidEmail(string strIn)
@@ -100,7 +100,7 @@ namespace EgeBilgiTaskCase.Client.Services
         {
             bool MyResult = false;
 
-            string FileExtension = System.IO.Path.GetExtension(FileContentName).ToLower();
+            string FileExtension = Path.GetExtension(FileContentName).ToLower();
 
             if (FileType == 0)
             {
@@ -244,7 +244,7 @@ namespace EgeBilgiTaskCase.Client.Services
             string pagePathWithoutQueryString = uri.GetLeftPart(UriPartial.Path);
 
             return newQueryString.Count > 0
-                ? String.Format("{0}?{1}", pagePathWithoutQueryString, newQueryString)
+                ? string.Format("{0}?{1}", pagePathWithoutQueryString, newQueryString)
                 : pagePathWithoutQueryString;
         }
         public string Get_TarihFormati_Sunucu()

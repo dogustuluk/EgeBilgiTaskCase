@@ -1,5 +1,4 @@
-﻿using DelmarV2.Domain.Entities.Common;
-using EgeBilgiTaskCase.Domain.Entities.Character;
+﻿using EgeBilgiTaskCase.Domain.Entities.Character;
 using EgeBilgiTaskCase.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

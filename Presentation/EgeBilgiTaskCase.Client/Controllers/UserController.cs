@@ -16,10 +16,80 @@ public class UserController : Controller
         _httpClientService = httpClientService;
     }
 
-    public async Task<IActionResult> Index()
-    {
-        return View();
-    }
+    //[AllowAnonymous]
+    //[HttpGet]
+    //public async Task<IActionResult> Index(User_Index_ViewModel model)
+    //{
+    //    var queryString = QueryStringHelperService.ToQueryString(model);
+
+    //    var response = await _httpClientService.GetAsync<PaginatedList<GetAllPagedCharacterQueryResponse>>(
+    //            new RequestParameters
+    //            {
+    //                Action = "GetAllPagedCharacter",
+    //                Controller = "Character",
+    //                Folder = "Character",
+    //                QueryString = queryString
+    //            }
+    //        );
+
+    //    List<Character_AdminGrid_ViewModel> myData = new();
+
+    //    foreach (var data in response.Data.Data)
+    //    {
+    //        myData.Add(new Character_AdminGrid_ViewModel()
+    //        {
+    //            Id = data.CharacterId,
+    //            CharacterApiId = data.CharacterApiId,
+    //            Guid = data.CharacterGuid,
+    //            CharacterName = data.CharacterName,
+    //            Gender = data.Gender,
+    //            Image = data.Image,
+    //            SpeciesName = data.SpeciesName,
+    //            StatusName = data.StatusName,
+
+    //        });
+    //    }
+
+    //    var speciesString = QueryStringHelperService.ToQueryString(new
+    //    {
+    //        DbParameterTypeId = 1,
+    //        ParentId = 4
+    //    });
+    //    var species_DDL_Response = await _httpClientService.GetDataListAsync(
+    //        new RequestParameters
+    //        {
+    //            Action = "GetDataListDbParameter",
+    //            Controller = "DbParameter",
+    //            Folder = "Management",
+    //            QueryString = speciesString
+    //        });
+
+
+
+    //    List<DataList1> species_DDL = species_DDL_Response;
+
+
+
+
+    //    Character_AdminIndex_ViewModel MYRESULT = new Character_AdminIndex_ViewModel()
+    //    {
+    //        PageTitle = "Rick And Morty",
+    //        SubPageTitle = "Karakterler",
+    //        MyGridData = myData,
+    //        MyPagination = response.Data.Pagination,
+    //        SearchText = model.SearchText,
+    //        LocationId = model.LocationId,
+    //        // SpeciesId = model.SpeciesId,
+    //        StatusId = model.StatusId,
+    //        Take = model.Take,
+    //        PageIndex = model.PageIndex,
+    //        OrderBy = model.OrderBy,
+    //        Species_DDL = species_DDL
+    //    };
+
+    //    return View(MYRESULT);
+
+    //}
 
     [AllowAnonymous]
     [HttpGet]

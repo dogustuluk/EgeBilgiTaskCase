@@ -1,5 +1,5 @@
 using EgeBilgiTaskCase.Client.Extensions.StartupExtensions;
-using EgeBilgiTaskCase.Client.Services;
+using EgeBilgiTaskCase.Client.HelperServices;
 
 var builder = WebApplication.CreateBuilder(args);
 

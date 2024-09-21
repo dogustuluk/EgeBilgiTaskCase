@@ -13,6 +13,7 @@ using EgeBilgiTaskCase.Application.Features.Queries.DbParameterType.GetAllDbPara
 using EgeBilgiTaskCase.Application.Features.Queries.DbParameterType.GetAllPagedDbParameterType;
 using EgeBilgiTaskCase.Application.Features.Queries.Episodes.GetAllEpisode;
 using EgeBilgiTaskCase.Application.Features.Queries.Episodes.GetDataListEpisodes;
+using EgeBilgiTaskCase.Application.Features.Queries.User.GetAllPagedUser;
 using EgeBilgiTaskCase.Application.Features.Queries.User.GetByIdOrGuidUser;
 using EgeBilgiTaskCase.Application.Utilities.Converters;
 using EgeBilgiTaskCase.Domain.Entities.Character;
@@ -47,6 +48,11 @@ namespace EgeBilgiTaskCase.Application.Common.Mappings
             CreateMap<CreateUserCommandResponse, OptResult<CreateUserCommandResponse>>();
 
             CreateMap<AppUser, GetByIdOrGuidUserQueryResponse>();
+
+
+            CreateMap<AppUser, GetAllPagedUserQueryResponse>();
+            CreateMap<GetAllPagedUserQueryRequest, GetAllPagedUser_Index_Dto>();
+            CreateMap<AppUser, GetAllPagedUserQueryRequest>();
 
             #endregion
 
